@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	
+       <bean id="notifygru-providerdirectory.provider.directory" class="fr.paris.lutece.plugins.gru.modules.provider.directory.implementation.ProviderDirectory"
+ 		p:key="notifygru-providerdirectory.provider.directory"
+ 		p:titleI18nKey="module.workflow.notifygru.task_notify_gru_provider_directory"
+                p:beanName="notifygru-providerdirectory.provider.directory" 
+                p:IdDirectory="1" 
+                p:IdStatusCRM="1" 
+                p:StatusTexte="En attente de validation" 
+                p:PositionUserEmail="2" 
+                p:PositionUserGuid="4" 
+                p:PositionUserPhoneNumber="3" 
+                p:PositionDemand="5"
+                p:PositionDemandType="6" />
+        
+           <bean id="notifygru-providerdirectory.ProviderDirectoryService" class="fr.paris.lutece.plugins.gru.modules.provider.directory.implementation.ProviderDirectoryService" />
+    
+</beans>

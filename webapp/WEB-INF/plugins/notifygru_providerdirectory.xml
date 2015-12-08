@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?><plug-in>
+    
+     <class>fr.paris.lutece.plugins.gru.modules.provider.directory.implementation.ProviderDirectoryPlugin</class>
+    <name>notifygru-providerdirectory</name>
+     <version>1.0.0-SNAPSHOT</version>
+    <documentation/>
+    <installation/>
+    <changes/>
+    <user-guide/>
+    <description>module.gru.provider.directory.module.description</description>
+    <provider>module.gru.provider.directory.module.provider</provider>
+    <provider-url>http://lutece.paris.fr</provider-url>
+    <icon-url>images/admin/skin/plugins/notifygru/providerdirectory/provider.png</icon-url>
+    <copyright>Copyright 2001-2015 Mairie de Paris</copyright>
+	<core-version-dependency>
+		<min-core-version>3.1.2</min-core-version>
+		<max-core-version/>	
+	</core-version-dependency>
+	
+	<!-- if the plugin must have a connection pool with parameter : 1 - yes, 0 - no -->	
+    <db-pool-required>1</db-pool-required>
+
+</plug-in>
