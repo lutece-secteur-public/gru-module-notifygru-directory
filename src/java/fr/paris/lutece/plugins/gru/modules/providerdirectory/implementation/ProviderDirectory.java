@@ -128,7 +128,7 @@ public class ProviderDirectory extends AbstractServiceProvider
     {
         Map<String, Object> model = new HashMap<String, Object>(  );
         List<IEntry> lrecord =_providerDirectoryService.getListEntriesFreemarker( _nIdDirectory );
-        model.put( "list_entries",  lrecord);
+        model.put( ProviderDirectoryConstants.MARK_STATE_LIST_MARKER_RESSOURCE,  lrecord);
 
         HtmlTemplate t = AppTemplateService.getTemplateFromStringFtl( AppTemplateService.getTemplate( 
                     TEMPLATE_FREEMARKER_LIST, local, model ).getHtml(  ), local, model );
@@ -158,7 +158,7 @@ public class ProviderDirectory extends AbstractServiceProvider
             {
                 strValue = _providerDirectoryService.getRecordFieldValue( recordField.getPosition(  ),
                         record.getIdRecord(  ), _nIdDirectory );
-                model.put( "position_" + recordField.getPosition(  ), strValue );
+                model.put( ProviderDirectoryConstants.MARK_POSITION + recordField.getPosition(  ), strValue );
             }
         }
         else
@@ -167,7 +167,7 @@ public class ProviderDirectory extends AbstractServiceProvider
 
             for ( IEntry recordField : listRecordField )
             {
-                model.put( "position_" + recordField.getPosition(  ), "" );
+                model.put( ProviderDirectoryConstants.MARK_POSITION + recordField.getPosition(  ), "" );
             }
         }
 

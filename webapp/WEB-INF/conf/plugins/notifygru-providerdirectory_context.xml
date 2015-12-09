@@ -13,7 +13,7 @@
 	
        <bean id="notifygru-providerdirectory.providerdirectory" class="fr.paris.lutece.plugins.gru.modules.providerdirectory.implementation.ProviderDirectory"
  		p:key="notifygru-providerdirectory.providerdirectory"
- 		p:titleI18nKey="module.workflow.notifygru.task_notify_gru_providerdirectory"
+ 		p:titleI18nKey="module.gru.providerdirectory.module.providerdirectory"
                 p:beanName="notifygru-providerdirectory.providerdirectory" 
                 p:IdDirectory="1" 
                 p:IdStatusCRM="1" 
