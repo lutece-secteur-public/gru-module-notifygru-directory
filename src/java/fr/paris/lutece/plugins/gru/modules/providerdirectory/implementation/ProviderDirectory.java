@@ -37,31 +37,28 @@ import fr.paris.lutece.plugins.directory.business.Directory;
 import fr.paris.lutece.plugins.directory.business.DirectoryHome;
 import fr.paris.lutece.plugins.directory.business.IEntry;
 import fr.paris.lutece.plugins.directory.business.Record;
-import fr.paris.lutece.plugins.directory.business.RecordField;
-import fr.paris.lutece.plugins.directory.business.RecordFieldFilter;
-import fr.paris.lutece.plugins.directory.business.RecordFieldHome;
+
 import fr.paris.lutece.plugins.directory.business.RecordHome;
 import fr.paris.lutece.plugins.directory.service.DirectoryPlugin;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.AbstractServiceProvider;
-import fr.paris.lutece.plugins.workflowcore.business.action.Action;
+
 import fr.paris.lutece.plugins.workflowcore.business.resource.ResourceHistory;
-import fr.paris.lutece.plugins.workflowcore.business.state.State;
+
 import fr.paris.lutece.plugins.workflowcore.service.resource.IResourceHistoryService;
-import fr.paris.lutece.plugins.workflowcore.service.state.IStateService;
-import fr.paris.lutece.plugins.workflowcore.service.state.StateService;
+
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.inject.Named;
+
 
 
 public class ProviderDirectory extends AbstractServiceProvider
@@ -71,10 +68,7 @@ public class ProviderDirectory extends AbstractServiceProvider
     private IResourceHistoryService _resourceHistoryService;
     @Inject
     private IProviderDirectoryService _providerDirectoryService;
-    @Inject
-    @Named( StateService.BEAN_SERVICE )
-    private IStateService _taskStateService;
-
+  
     //config provider
     private int _nPositionUserEmail;
     private int _nPositionUserGuid;
@@ -107,21 +101,7 @@ public class ProviderDirectory extends AbstractServiceProvider
         return _providerDirectoryService.getUserGuid( _nPositionUserGuid, record.getIdRecord(  ), _nIdDirectory );
     }
 
-    @Override
-    public String getStatus( int nIdResource )
-    {
-        ResourceHistory resourceHistory = _resourceHistoryService.findByPrimaryKey( nIdResource );
-        Record record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource(  ), pluginDirectory );
-        Directory directory = DirectoryHome.findByPrimaryKey( record.getDirectory(  ).getIdDirectory(  ),
-                pluginDirectory );
-        Action action = resourceHistory.getAction(  );
-
-        //  State stateBefore = _taskStateService.findByPrimaryKey(action.getStateBefore().getId());
-        State stateAfter = _taskStateService.findByPrimaryKey( action.getStateAfter(  ).getId(  ) );
-
-        //State state= WorkflowService.getInstance(  ).getState( nIdResource, WORKFLOW_RESOURCE_TYPE, directory.getIdWorkflow(), -1 );        
-        return stateAfter.getName(  );
-    }
+ 
 
     @Override
     public String getInfosHelp( Locale local )
@@ -139,7 +119,7 @@ public class ProviderDirectory extends AbstractServiceProvider
     }
 
     @Override
-    public Object getInfos( int nIdResource )
+    public Map<String, Object> getInfos( int nIdResource )
     {
         Map<String, Object> model = new HashMap<String, Object>(  );
 
@@ -174,8 +154,8 @@ public class ProviderDirectory extends AbstractServiceProvider
         return model;
     }
 
-    @Override
-    public String getMobilePhoneNumber( int nIdResource )
+     @Override
+    public String getOptionalMobilePhoneNumber( int nIdResource )
     {
         ResourceHistory resourceHistory = _resourceHistoryService.findByPrimaryKey( nIdResource );
         Record record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource(  ), pluginDirectory );
@@ -184,14 +164,10 @@ public class ProviderDirectory extends AbstractServiceProvider
             _nIdDirectory );
     }
 
-    @Override
-    public Boolean isMobilePhoneNumberAvailable( int nIdResource )
-    {
-        return true;
-    }
+   
 
-    @Override
-    public int getIdDemand( int nIdResource )
+   @Override
+    public int getOptionalDemandId( int nIdResource )
     {
         ResourceHistory resourceHistory = _resourceHistoryService.findByPrimaryKey( nIdResource );
         Record record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource(  ), pluginDirectory );
@@ -199,14 +175,14 @@ public class ProviderDirectory extends AbstractServiceProvider
         return _providerDirectoryService.getIdDemand( _nPositionDemand, record.getIdRecord(  ), _nIdDirectory );
     }
 
-    @Override
+  
     public Boolean isIdDemandAvailable( int nIdResource )
     {
         return true;
     }
 
-    @Override
-    public int getIdDemandType( int nIdResource )
+@Override
+    public int getOptionalDemandIdType( int nIdResource )
     {
         ResourceHistory resourceHistory = _resourceHistoryService.findByPrimaryKey( nIdResource );
         Record record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource(  ), pluginDirectory );
@@ -214,7 +190,7 @@ public class ProviderDirectory extends AbstractServiceProvider
         return _providerDirectoryService.getIdDemandType( _nPositionDemandType, record.getIdRecord(  ), _nIdDirectory );
     }
 
-    @Override
+
     public Boolean isIdDemandTypeAvailable( int nIdResource )
     {
         return true;
@@ -329,4 +305,6 @@ public class ProviderDirectory extends AbstractServiceProvider
     {
         this._strStatusTexte = _strStatusTexte;
     }
+
+   
 }
