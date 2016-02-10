@@ -322,4 +322,16 @@ public class NotifyGruDirectory extends AbstractServiceProvider
     {
         this._nIdDirectory = nIdDirectory;
     }
+
+    @Override
+    public String getDemandReference( int nIdResourceHistory ) 
+    {
+        return "Nothing";
+    }
+
+    @Override
+    public String getCustomerId( int nIdResourceHistory ) 
+    {
+        return "Nothing";
+    }
 }
