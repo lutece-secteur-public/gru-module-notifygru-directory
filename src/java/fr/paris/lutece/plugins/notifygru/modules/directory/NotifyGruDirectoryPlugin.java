@@ -31,7 +31,7 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.providerdirectory.implementation;
+package fr.paris.lutece.plugins.notifygru.modules.directory;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation;
@@ -43,9 +43,9 @@ import fr.paris.lutece.portal.service.plugin.PluginService;
  * ProviderDirectoryPlugin
  *
  */
-public class ProviderDirectoryPlugin extends PluginDefaultImplementation
+public class NotifyGruDirectoryPlugin extends PluginDefaultImplementation
 {
-    public static final String PLUGIN_NAME = "notifygru-providerdirectory";
+    public static final String PLUGIN_NAME = "notifygru-directory";
     public static final String BEAN_TRANSACTION_MANAGER = PLUGIN_NAME + ".transactionManager";
 
     /**

@@ -31,103 +31,101 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.providerdirectory.implementation;
+package fr.paris.lutece.plugins.notifygru.modules.directory.services;
 
-import fr.paris.lutece.plugins.directory.business.Directory;
+
 import fr.paris.lutece.plugins.directory.business.DirectoryHome;
 import fr.paris.lutece.plugins.directory.business.EntryFilter;
 import fr.paris.lutece.plugins.directory.business.EntryHome;
-import fr.paris.lutece.plugins.directory.business.EntryTypeGeolocation;
 import fr.paris.lutece.plugins.directory.business.IEntry;
-import fr.paris.lutece.plugins.directory.business.Record;
 import fr.paris.lutece.plugins.directory.business.RecordField;
 import fr.paris.lutece.plugins.directory.business.RecordFieldFilter;
 import fr.paris.lutece.plugins.directory.business.RecordFieldHome;
 import fr.paris.lutece.plugins.directory.service.DirectoryPlugin;
 import fr.paris.lutece.plugins.directory.utils.DirectoryUtils;
-import fr.paris.lutece.plugins.workflow.modules.notifygru.business.TaskNotifyGruConfig;
-import fr.paris.lutece.plugins.workflow.service.WorkflowPlugin;
 import fr.paris.lutece.plugins.workflow.service.security.IWorkflowUserAttributesManager;
-import fr.paris.lutece.plugins.workflow.service.taskinfo.TaskInfoManager;
 import fr.paris.lutece.plugins.workflowcore.business.action.Action;
-import fr.paris.lutece.plugins.workflowcore.business.resource.ResourceHistory;
 import fr.paris.lutece.plugins.workflowcore.business.state.State;
 import fr.paris.lutece.plugins.workflowcore.business.state.StateFilter;
 import fr.paris.lutece.plugins.workflowcore.service.action.IActionService;
 import fr.paris.lutece.plugins.workflowcore.service.state.IStateService;
-import fr.paris.lutece.plugins.workflowcore.service.task.ITask;
 import fr.paris.lutece.portal.service.admin.AdminUserService;
 import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.mailinglist.AdminMailingListService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
-import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
-import fr.paris.lutece.portal.service.workflow.WorkflowService;
 import fr.paris.lutece.util.ReferenceList;
-import fr.paris.lutece.util.url.UrlItem;
-import fr.paris.lutece.util.xml.XmlUtil;
-
 import org.apache.commons.lang.StringUtils;
-
-import java.sql.Timestamp;
-
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
-
 import javax.inject.Inject;
-
 import javax.servlet.http.HttpServletRequest;
 
 
+
 /**
- *
- * NotifyDirectoryService
- *
+ * NotifyDirectoryService.
  */
-public final class ProviderDirectoryService implements IProviderDirectoryService
+public final class NotifyGruDirectoryService implements INotifyGruDirectoryService
 {
     /** The Constant BEAN_SERVICE. */
-    public static final String BEAN_SERVICE = "notifygru-providerdirectory.ProviderDirectoryService";
+    public static final String BEAN_SERVICE = "notifygru-directory.ProviderDirectoryService";
 
+    /** The _action service. */
     // SERVICES
     @Inject
     private IActionService _actionService;
+    
+    /** The _state service. */
     @Inject
     private IStateService _stateService;
+    
+    /** The _user attributes manager. */
     @Inject
     private IWorkflowUserAttributesManager _userAttributesManager;
+    
+    /** The _list accepted entry types email sms. */
     private final List<Integer> _listAcceptedEntryTypesEmailSMS;
+    
+    /** The _list accepted entry types user guid. */
     private final List<Integer> _listAcceptedEntryTypesUserGuid;
+    
+    /** The _list refused entry types. */
     private final List<Integer> _listRefusedEntryTypes;
+    
+    /** The _list accepted entry types file. */
     private final List<Integer> _listAcceptedEntryTypesFile;
 
+   
     /**
-    * Private constructor
-    */
-    private ProviderDirectoryService(  )
+     * Instantiates a new notify gru directory service.
+     */
+    private NotifyGruDirectoryService(  )
     {
         // Init list accepted entry types for email
-        _listAcceptedEntryTypesEmailSMS = fillListEntryTypes( ProviderDirectoryConstants.PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_EMAIL_SMS );
+        _listAcceptedEntryTypesEmailSMS = fillListEntryTypes( NotifyGruDirectoryConstants.PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_EMAIL_SMS );
 
         // Init list accepted entry types for user guid
-        _listAcceptedEntryTypesUserGuid = fillListEntryTypes( ProviderDirectoryConstants.PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_USER_GUID );
+        _listAcceptedEntryTypesUserGuid = fillListEntryTypes( NotifyGruDirectoryConstants.PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_USER_GUID );
 
         // Init list accepted entry types for file
-        _listAcceptedEntryTypesFile = fillListEntryTypes( ProviderDirectoryConstants.PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_FILE );
+        _listAcceptedEntryTypesFile = fillListEntryTypes( NotifyGruDirectoryConstants.PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_FILE );
 
         // Init list refused entry types
-        _listRefusedEntryTypes = fillListEntryTypes( ProviderDirectoryConstants.PROPERTY_REFUSED_DIRECTORY_ENTRY_TYPE_USER_GUID );
+        _listRefusedEntryTypes = fillListEntryTypes( NotifyGruDirectoryConstants.PROPERTY_REFUSED_DIRECTORY_ENTRY_TYPE_USER_GUID );
     }
 
+    /**
+     * Fill list entry types.
+     *
+     * @param strPropertyEntryTypes the str property entry types
+     * @return the list
+     */
     private static List<Integer> fillListEntryTypes( String strPropertyEntryTypes )
     {
         List<Integer> listEntryTypes = new ArrayList<Integer>(  );
@@ -135,7 +133,7 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
 
         if ( StringUtils.isNotBlank( strEntryTypes ) )
         {
-            String[] listAcceptEntryTypesForIdDemand = strEntryTypes.split( ProviderDirectoryConstants.COMMA );
+            String[] listAcceptEntryTypesForIdDemand = strEntryTypes.split( NotifyGruDirectoryConstants.COMMA );
 
             for ( String strAcceptEntryType : listAcceptEntryTypesForIdDemand )
             {
@@ -150,6 +148,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return listEntryTypes;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#isEntryTypeEmailSMSAccepted(int)
+     */
     @Override
     public boolean isEntryTypeEmailSMSAccepted( int nIdEntryType )
     {
@@ -163,6 +164,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return bIsAccepted;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#isEntryTypeUserGuidAccepted(int)
+     */
     @Override
     public boolean isEntryTypeUserGuidAccepted( int nIdEntryType )
     {
@@ -176,6 +180,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return bIsAccepted;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#isEntryTypeFileAccepted(int)
+     */
     @Override
     public boolean isEntryTypeFileAccepted( int nIdEntryType )
     {
@@ -189,6 +196,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return bIsAccepted;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#isEntryTypeRefused(int)
+     */
     @Override
     public boolean isEntryTypeRefused( int nIdEntryType )
     {
@@ -202,6 +212,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return bIsRefused;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getListStates(int)
+     */
     @Override
     public ReferenceList getListStates( int nIdAction )
     {
@@ -216,13 +229,16 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
             List<State> listStates = _stateService.getListStateByFilter( stateFilter );
 
             referenceListStates.addItem( DirectoryUtils.CONSTANT_ID_NULL, StringUtils.EMPTY );
-            referenceListStates.addAll( ReferenceList.convert( listStates, ProviderDirectoryConstants.ID,
-                    ProviderDirectoryConstants.NAME, true ) );
+            referenceListStates.addAll( ReferenceList.convert( listStates, NotifyGruDirectoryConstants.ID,
+                    NotifyGruDirectoryConstants.NAME, true ) );
         }
 
         return referenceListStates;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getListDirectories()
+     */
     @Override
     public ReferenceList getListDirectories(  )
     {
@@ -239,6 +255,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return refenreceListDirectories;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getMailingList(javax.servlet.http.HttpServletRequest)
+     */
     @Override
     public ReferenceList getMailingList( HttpServletRequest request )
     {
@@ -249,6 +268,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return refMailingList;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getListEntries(int)
+     */
     @Override
     public List<IEntry> getListEntries( int nidDirectory )
     {
@@ -262,6 +284,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return listEntries;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getListEntriesUserGuid(int, java.util.Locale)
+     */
     @Override
     public ReferenceList getListEntriesUserGuid( int nidDirectory, Locale locale )
     {
@@ -281,20 +306,30 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return refenreceListEntries;
     }
 
+    /**
+     * Builds the reference entry to string.
+     *
+     * @param entry the entry
+     * @param locale the locale
+     * @return the string
+     */
     private String buildReferenceEntryToString( IEntry entry, Locale locale )
     {
         StringBuilder sbReferenceEntry = new StringBuilder(  );
         sbReferenceEntry.append( entry.getPosition(  ) );
-        sbReferenceEntry.append( ProviderDirectoryConstants.SPACE + ProviderDirectoryConstants.OPEN_BRACKET );
+        sbReferenceEntry.append( NotifyGruDirectoryConstants.SPACE + NotifyGruDirectoryConstants.OPEN_BRACKET );
         sbReferenceEntry.append( entry.getTitle(  ) );
-        sbReferenceEntry.append( ProviderDirectoryConstants.SPACE + ProviderDirectoryConstants.HYPHEN +
-            ProviderDirectoryConstants.SPACE );
+        sbReferenceEntry.append( NotifyGruDirectoryConstants.SPACE + NotifyGruDirectoryConstants.HYPHEN +
+            NotifyGruDirectoryConstants.SPACE );
         sbReferenceEntry.append( I18nService.getLocalizedString( entry.getEntryType(  ).getTitleI18nKey(  ), locale ) );
-        sbReferenceEntry.append( ProviderDirectoryConstants.CLOSED_BRACKET );
+        sbReferenceEntry.append( NotifyGruDirectoryConstants.CLOSED_BRACKET );
 
         return sbReferenceEntry.toString(  );
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getListEntriesEmailSMS(int, java.util.Locale)
+     */
     @Override
     public ReferenceList getListEntriesEmailSMS( int nidDirectory, Locale locale )
     {
@@ -314,6 +349,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return refenreceListEntries;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getListEntriesFreemarker(int)
+     */
     @Override
     public List<IEntry> getListEntriesFreemarker( int nidDirectory )
     {
@@ -332,6 +370,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return listEntries;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getListEntriesFile(int, java.util.Locale)
+     */
     @Override
     public List<IEntry> getListEntriesFile( int nidDirectory, Locale locale )
     {
@@ -350,6 +391,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return listEntries;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getEmail(int, int, int)
+     */
     @Override
     public String getEmail( int nPositionEmail, int nIdRecord, int nIdDirectory )
     {
@@ -360,6 +404,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return strEmail;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getIdDemand(int, int, int)
+     */
     @Override
     public int getIdDemand( int nPositionDemand, int nIdRecord, int nIdDirectory )
     {
@@ -380,6 +427,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return nId;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getIdDemandType(int, int, int)
+     */
     @Override
     public int getIdDemandType( int nPositionDemandType, int nIdRecord, int nIdDirectory )
     {
@@ -400,6 +450,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return nId;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getRecordFieldValue(int, int, int)
+     */
     @Override
     public String getRecordFieldValue( int nPosition, int nIdRecord, int nIdDirectory )
     {
@@ -439,6 +492,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return strRecordFieldValue;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getSMSPhoneNumber(int, int, int)
+     */
     @Override
     public String getSMSPhoneNumber( int nPositionPhoneNumber, int nIdRecord, int nIdDirectory )
     {
@@ -449,6 +505,9 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return strSMSPhoneNumber;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getUserGuid(int, int, int)
+     */
     @Override
     public String getUserGuid( int nPositionUserGuid, int nIdRecord, int nIdDirectory )
     {
@@ -462,6 +521,12 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return strUserGuid;
     }
 
+    /**
+     * Fill model with user attributes.
+     *
+     * @param model the model
+     * @param strUserGuid the str user guid
+     */
     private void fillModelWithUserAttributes( Map<String, Object> model, String strUserGuid )
     {
         if ( _userAttributesManager.isEnabled(  ) && StringUtils.isNotBlank( strUserGuid ) )
@@ -472,17 +537,20 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
             String strEmail = mapUserAttributes.get( LuteceUser.BUSINESS_INFO_ONLINE_EMAIL );
             String strPhoneNumber = mapUserAttributes.get( LuteceUser.BUSINESS_INFO_TELECOM_TELEPHONE_NUMBER );
 
-            model.put( ProviderDirectoryConstants.MARK_FIRST_NAME,
+            model.put( NotifyGruDirectoryConstants.MARK_FIRST_NAME,
                 StringUtils.isNotEmpty( strFirstName ) ? strFirstName : StringUtils.EMPTY );
-            model.put( ProviderDirectoryConstants.MARK_LAST_NAME,
+            model.put( NotifyGruDirectoryConstants.MARK_LAST_NAME,
                 StringUtils.isNotEmpty( strLastName ) ? strLastName : StringUtils.EMPTY );
-            model.put( ProviderDirectoryConstants.MARK_EMAIL,
+            model.put( NotifyGruDirectoryConstants.MARK_EMAIL,
                 StringUtils.isNotEmpty( strEmail ) ? strEmail : StringUtils.EMPTY );
-            model.put( ProviderDirectoryConstants.MARK_PHONE_NUMBER,
+            model.put( NotifyGruDirectoryConstants.MARK_PHONE_NUMBER,
                 StringUtils.isNotEmpty( strPhoneNumber ) ? strPhoneNumber : StringUtils.EMPTY );
         }
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService#getLocale(javax.servlet.http.HttpServletRequest)
+     */
     @Override
     public Locale getLocale( HttpServletRequest request )
     {
@@ -500,6 +568,12 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         return locale;
     }
 
+    /**
+     * Gets the base url.
+     *
+     * @param request the request
+     * @return the base url
+     */
     private String getBaseUrl( HttpServletRequest request )
     {
         String strBaseUrl = StringUtils.EMPTY;
@@ -510,15 +584,15 @@ public final class ProviderDirectoryService implements IProviderDirectoryService
         }
         else
         {
-            strBaseUrl = AppPropertiesService.getProperty( ProviderDirectoryConstants.PROPERTY_LUTECE_ADMIN_PROD_URL );
+            strBaseUrl = AppPropertiesService.getProperty( NotifyGruDirectoryConstants.PROPERTY_LUTECE_ADMIN_PROD_URL );
 
             if ( StringUtils.isBlank( strBaseUrl ) )
             {
-                strBaseUrl = AppPropertiesService.getProperty( ProviderDirectoryConstants.PROPERTY_LUTECE_BASE_URL );
+                strBaseUrl = AppPropertiesService.getProperty( NotifyGruDirectoryConstants.PROPERTY_LUTECE_BASE_URL );
 
                 if ( StringUtils.isBlank( strBaseUrl ) )
                 {
-                    strBaseUrl = AppPropertiesService.getProperty( ProviderDirectoryConstants.PROPERTY_LUTECE_PROD_URL );
+                    strBaseUrl = AppPropertiesService.getProperty( NotifyGruDirectoryConstants.PROPERTY_LUTECE_PROD_URL );
                 }
             }
         }

@@ -31,174 +31,200 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.providerdirectory.implementation;
+package fr.paris.lutece.plugins.notifygru.modules.directory.services;
 
-import fr.paris.lutece.plugins.directory.business.Directory;
+
 import fr.paris.lutece.plugins.directory.business.IEntry;
-import fr.paris.lutece.plugins.directory.business.Record;
-import fr.paris.lutece.plugins.workflow.modules.notifygru.business.TaskNotifyGruConfig;
-import fr.paris.lutece.plugins.workflowcore.business.resource.ResourceHistory;
 import fr.paris.lutece.util.ReferenceList;
-
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 
-/**
- *
- *
- */
-public interface IProviderDirectoryService
-{
-    // CHECKS
 
+/**
+ * The Interface INotifyGruDirectoryService.
+ */
+public interface INotifyGruDirectoryService
+{
+   
     /**
-     * Check if the given entry type id is accepted for the email or the sms
-     * @param nIdEntryType the id entry type
-     * @return true if it is accepted, false otherwise
+     * Checks if is entry type email sms accepted.
+     *
+     * @param nIdEntryType the n id entry type
+     * @return true, if is entry type email sms accepted
      */
     boolean isEntryTypeEmailSMSAccepted( int nIdEntryType );
 
+ 
     /**
-     * Check if the given entry type id is accepted for the user guid
-     * @param nIdEntryType the id entry type
-     * @return true if it is accepted, false otherwise
+     * Checks if is entry type user guid accepted.
+     *
+     * @param nIdEntryType the n id entry type
+     * @return true, if is entry type user guid accepted
      */
     boolean isEntryTypeUserGuidAccepted( int nIdEntryType );
 
+   
     /**
-     * Check if the given entry type id is accepted for file
-     * @param nIdEntryType the id entry type
-     * @return true if it is accepted, false otherwise
+     * Checks if is entry type file accepted.
+     *
+     * @param nIdEntryType the n id entry type
+     * @return true, if is entry type file accepted
      */
     boolean isEntryTypeFileAccepted( int nIdEntryType );
 
+   
     /**
-     * Check if the entry is refused (values set in the
-     * workflow-notifydirectory.properties)
-     * @param nIdEntryType the id entry type
-     * @return true if it is refused, false otherwise
+     * Checks if is entry type refused.
+     *
+     * @param nIdEntryType the n id entry type
+     * @return true, if is entry type refused
      */
     boolean isEntryTypeRefused( int nIdEntryType );
 
-    // GETS
-
+  
     /**
-     * Get the list of states
-     * @param nIdAction  the id action
-     * @return a ReferenceList
+     * Gets the list states.
+     *
+     * @param nIdAction the n id action
+     * @return the list states
      */
     ReferenceList getListStates( int nIdAction );
 
+   
     /**
-     * Get the list of directorise
-     * @return a ReferenceList
+     * Gets the list directories.
+     *
+     * @return the list directories
      */
     ReferenceList getListDirectories(  );
 
+   
     /**
-     * Get the mailing list
-     * @param request the HTTP request
-     * @return a ReferenceList
+     * Gets the mailing list.
+     *
+     * @param request the request
+     * @return the mailing list
      */
     ReferenceList getMailingList( HttpServletRequest request );
 
+  
     /**
-     * Get the list of entries that have the accepted type (which are defined in
-     * <b>workflow-notifydirectory.properties</b>)
-     * @param nidDirectory
-     * @param locale the Locale
-     * @return a ReferenceList
+     * Gets the list entries user guid.
+     *
+     * @param nidDirectory the nid directory
+     * @param locale the locale
+     * @return the list entries user guid
      */
     ReferenceList getListEntriesUserGuid( int nidDirectory, Locale locale );
 
+  
     /**
-     * Get the list of entries that have the accepted type (which are defined in
-     * <b>workflow-notifydirectory.properties</b>)
-     * @param nidDirectory
-     * @param locale the Locale
-     * @return a ReferenceList
+     * Gets the list entries email sms.
+     *
+     * @param nidDirectory the nid directory
+     * @param locale the locale
+     * @return the list entries email sms
      */
     ReferenceList getListEntriesEmailSMS( int nidDirectory, Locale locale );
 
+  
     /**
-     * Get the list of entries that have not the refused type (which are defined
-     * in the <b>workflow-notifydirectory.properties</b>). <br />
-     * This list will be displayed as a freemarker label that the webmaster can
-     * use to write the notifications.
-     * @param nidDirectory
-     * @return a list of {@link IEntry}
+     * Gets the list entries freemarker.
+     *
+     * @param nidDirectory the nid directory
+     * @return the list entries freemarker
      */
     List<IEntry> getListEntriesFreemarker( int nidDirectory );
 
+  
+   
     /**
-     */
-
-    /**
+     * Gets the list entries file.
      *
-     * @param nidDirectory
-     * @param locale
-     * @return
+     * @param nidDirectory the nid directory
+     * @param locale the locale
+     * @return the list entries file
      */
     List<IEntry> getListEntriesFile( int nidDirectory, Locale locale );
 
+ 
     /**
-     * @param nidDirectory
-     * @return */
+     * Gets the list entries.
+     *
+     * @param nidDirectory the nid directory
+     * @return the list entries
+     */
     List<IEntry> getListEntries( int nidDirectory );
 
+  
     /**
-     * Get the email from either an entry containing the email, or an entry
-     * containing the user guid
-     * @param nPositionEmail
-     * @param nIdRecord the id record
-     * @param nIdDirectory the id directory
+     * Gets the email.
+     *
+     * @param nPositionEmail the n position email
+     * @param nIdRecord the n id record
+     * @param nIdDirectory the n id directory
      * @return the email
      */
     String getEmail( int nPositionEmail, int nIdRecord, int nIdDirectory );
 
+  
     /**
-     * @param nPositionDemand
-     * @param nIdRecord
-     * @param nIdDirectory
-     * @return */
+     * Gets the id demand.
+     *
+     * @param nPositionDemand the n position demand
+     * @param nIdRecord the n id record
+     * @param nIdDirectory the n id directory
+     * @return the id demand
+     */
     int getIdDemand( int nPositionDemand, int nIdRecord, int nIdDirectory );
 
+  
     /**
-    * @param nPositionDemandType
-    * @param nIdRecord
-    * @param nIdDirectory
-    * @return */
+     * Gets the id demand type.
+     *
+     * @param nPositionDemandType the n position demand type
+     * @param nIdRecord the n id record
+     * @param nIdDirectory the n id directory
+     * @return the id demand type
+     */
     int getIdDemandType( int nPositionDemandType, int nIdRecord, int nIdDirectory );
 
+ 
     /**
-     * Get the sms phone number
-     * @param nPositionPhoneNumber
-     * @param nIdRecord the id record
-     * @param nIdDirectory the id directory
-     * @return the sms phone number
+     * Gets the SMS phone number.
+     *
+     * @param nPositionPhoneNumber the n position phone number
+     * @param nIdRecord the n id record
+     * @param nIdDirectory the n id directory
+     * @return the SMS phone number
      */
     String getSMSPhoneNumber( int nPositionPhoneNumber, int nIdRecord, int nIdDirectory );
 
+ 
     /**
-     * Get the user guid
-     * @param nPositionUserGuid
-     * @param nIdRecord the id record
-     * @param nIdDirectory the id directory
-     * @return the user guid, an empty string if the position is not set
+     * Gets the user guid.
+     *
+     * @param nPositionUserGuid the n position user guid
+     * @param nIdRecord the n id record
+     * @param nIdDirectory the n id directory
+     * @return the user guid
      */
     String getUserGuid( int nPositionUserGuid, int nIdRecord, int nIdDirectory );
 
+ 
     /**
-     * @param nPosition
-     * @param nIdRecord
-     * @param nIdDirectory
-     * @return */
-    public String getRecordFieldValue( int nPosition, int nIdRecord, int nIdDirectory );
+     * Gets the record field value.
+     *
+     * @param nPosition the n position
+     * @param nIdRecord the n id record
+     * @param nIdDirectory the n id directory
+     * @return the record field value
+     */
+     String getRecordFieldValue( int nPosition, int nIdRecord, int nIdDirectory );
 
+  
     /**
      * Gets the locale.
      *

@@ -31,7 +31,7 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.providerdirectory.implementation;
+package fr.paris.lutece.plugins.notifygru.modules.directory.services;
 
 
 /**
@@ -39,7 +39,7 @@ package fr.paris.lutece.plugins.gru.modules.providerdirectory.implementation;
  * NotifyDirectoryConstants
  *
  */
-public final class ProviderDirectoryConstants
+public final class NotifyGruDirectoryConstants
 {
     // CONSTANTS
     public static final String COMMA = ",";
@@ -53,14 +53,13 @@ public final class ProviderDirectoryConstants
     public static final String USER_AUTO = "auto";
     public static final String TASK_NOTIFY_DIRECTORY_KEY = "taskNotifyDirectory";
 
-   
     // PROPERTIES
     public static final String PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_EMAIL_SMS = "workflow-notifygru.acceptedDirectoryEntryTypesEmailSMS";
     public static final String PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_USER_GUID = "workflow-notifygru.acceptedDirectoryEntryTypesUserGuid";
     public static final String PROPERTY_REFUSED_DIRECTORY_ENTRY_TYPE_USER_GUID = "workflow-notifygru.refusedDirectoryEntryTypes";
     public static final String PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_FILE = "workflow-notifygru.acceptedDirectoryEntryTypesFile";
     public static final String PROPERTY_NOTIFY_MAIL_DEFAULT_SENDER_NAME = "workflow-notifygru.notification_mail.default_sender_name";
-    public static final String PROPERTY_SERVER_SMS = "workflow-notifygru.email_server_sms";    
+    public static final String PROPERTY_SERVER_SMS = "workflow-notifygru.email_server_sms";
     public static final String PROPERTY_LUTECE_ADMIN_PROD_URL = "lutece.admin.prod.url";
     public static final String PROPERTY_LUTECE_BASE_URL = "lutece.base.url";
     public static final String PROPERTY_LUTECE_PROD_URL = "lutece.prod.url";
@@ -133,7 +132,7 @@ public final class ProviderDirectoryConstants
     /**
      * Private constructor
      */
-    private ProviderDirectoryConstants(  )
+    private NotifyGruDirectoryConstants(  )
     {
     }
 }
