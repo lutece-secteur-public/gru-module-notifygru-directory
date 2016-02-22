@@ -63,6 +63,11 @@ public final class NotifyGruDirectoryConstants
     public static final String PROPERTY_LUTECE_ADMIN_PROD_URL = "lutece.admin.prod.url";
     public static final String PROPERTY_LUTECE_BASE_URL = "lutece.base.url";
     public static final String PROPERTY_LUTECE_PROD_URL = "lutece.prod.url";
+    
+    public static final String PROPERTY_CONFIG_PROVIDER_DEMAND_TYPE = "notifygru-directory.config.provider.PositionDemandType";
+    public static final String PROPERTY_CONFIG_PROVIDER_USER_EMAIL = "notifygru-directory.config.provider.PositionUserEmail";
+    public static final String PROPERTY_CONFIG_PROVIDER_USER_GUID = "notifygru-directory.config.provider.PositionUserGuid";
+    public static final String PROPERTY_CONFIG_PROVIDER_PHONE_NUMBER= "notifygru-directory.config.provider.PositionUserPhoneNumber";
 
     // MARKS
     public static final String MARK_MESSAGE = "message";
@@ -122,6 +127,7 @@ public final class NotifyGruDirectoryConstants
 
     // TAGS
     public static final String TAG_A = "a";
+    public static final String TITLE_I18NKEY = "module.notifygru.directory.module.providerdirectory";
 
     // ATTRIBUTES
     public static final String ATTRIBUTE_HREF = "href";

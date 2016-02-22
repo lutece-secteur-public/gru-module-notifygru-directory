@@ -11,15 +11,12 @@
        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
 	
-       <bean id="notifygru-directory.ProviderService" class="fr.paris.lutece.plugins.notifygru.modules.directory.NotifyGruDirectory"
+       <bean id="notifygru-directory.ProviderService" class="fr.paris.lutece.plugins.notifygru.modules.directory.NotifyGruDirectoryManager"
  		p:key="notifygru-directory.ProviderService"
  		p:titleI18nKey="module.notifygru.directory.module.providerdirectory"
                 p:beanName="notifygru-directory.ProviderService" 
-                p:IdDirectory="1"              
-                p:PositionUserEmail="1" 
-                p:PositionUserGuid="2" 
-                p:PositionUserPhoneNumber="3"              
-                p:PositionDemandType="4" />
+                p:managerProvider="true" 
+                 />
         
            <bean id="notifygru-directory.ProviderDirectoryService" class="fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryService" />
     
