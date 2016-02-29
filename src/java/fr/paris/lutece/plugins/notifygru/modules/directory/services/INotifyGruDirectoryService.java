@@ -33,13 +33,13 @@
  */
 package fr.paris.lutece.plugins.notifygru.modules.directory.services;
 
-
 import fr.paris.lutece.plugins.directory.business.IEntry;
 import fr.paris.lutece.util.ReferenceList;
+
 import java.util.List;
 import java.util.Locale;
-import javax.servlet.http.HttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -47,7 +47,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface INotifyGruDirectoryService
 {
-   
     /**
      * Checks if is entry type email sms accepted.
      *
@@ -56,7 +55,6 @@ public interface INotifyGruDirectoryService
      */
     boolean isEntryTypeEmailSMSAccepted( int nIdEntryType );
 
- 
     /**
      * Checks if is entry type user guid accepted.
      *
@@ -65,7 +63,6 @@ public interface INotifyGruDirectoryService
      */
     boolean isEntryTypeUserGuidAccepted( int nIdEntryType );
 
-   
     /**
      * Checks if is entry type file accepted.
      *
@@ -74,7 +71,6 @@ public interface INotifyGruDirectoryService
      */
     boolean isEntryTypeFileAccepted( int nIdEntryType );
 
-   
     /**
      * Checks if is entry type refused.
      *
@@ -83,7 +79,6 @@ public interface INotifyGruDirectoryService
      */
     boolean isEntryTypeRefused( int nIdEntryType );
 
-  
     /**
      * Gets the list states.
      *
@@ -92,7 +87,6 @@ public interface INotifyGruDirectoryService
      */
     ReferenceList getListStates( int nIdAction );
 
-   
     /**
      * Gets the list directories.
      *
@@ -100,7 +94,6 @@ public interface INotifyGruDirectoryService
      */
     ReferenceList getListDirectories(  );
 
-   
     /**
      * Gets the mailing list.
      *
@@ -109,7 +102,6 @@ public interface INotifyGruDirectoryService
      */
     ReferenceList getMailingList( HttpServletRequest request );
 
-  
     /**
      * Gets the list entries user guid.
      *
@@ -119,7 +111,6 @@ public interface INotifyGruDirectoryService
      */
     ReferenceList getListEntriesUserGuid( int nidDirectory, Locale locale );
 
-  
     /**
      * Gets the list entries email sms.
      *
@@ -129,7 +120,6 @@ public interface INotifyGruDirectoryService
      */
     ReferenceList getListEntriesEmailSMS( int nidDirectory, Locale locale );
 
-  
     /**
      * Gets the list entries freemarker.
      *
@@ -138,8 +128,6 @@ public interface INotifyGruDirectoryService
      */
     List<IEntry> getListEntriesFreemarker( int nidDirectory );
 
-  
-   
     /**
      * Gets the list entries file.
      *
@@ -149,7 +137,6 @@ public interface INotifyGruDirectoryService
      */
     List<IEntry> getListEntriesFile( int nidDirectory, Locale locale );
 
- 
     /**
      * Gets the list entries.
      *
@@ -158,7 +145,6 @@ public interface INotifyGruDirectoryService
      */
     List<IEntry> getListEntries( int nidDirectory );
 
-  
     /**
      * Gets the email.
      *
@@ -169,7 +155,6 @@ public interface INotifyGruDirectoryService
      */
     String getEmail( int nPositionEmail, int nIdRecord, int nIdDirectory );
 
-  
     /**
      * Gets the id demand.
      *
@@ -180,7 +165,6 @@ public interface INotifyGruDirectoryService
      */
     int getIdDemand( int nPositionDemand, int nIdRecord, int nIdDirectory );
 
-  
     /**
      * Gets the id demand type.
      *
@@ -191,7 +175,6 @@ public interface INotifyGruDirectoryService
      */
     int getIdDemandType( int nPositionDemandType, int nIdRecord, int nIdDirectory );
 
- 
     /**
      * Gets the SMS phone number.
      *
@@ -202,7 +185,6 @@ public interface INotifyGruDirectoryService
      */
     String getSMSPhoneNumber( int nPositionPhoneNumber, int nIdRecord, int nIdDirectory );
 
- 
     /**
      * Gets the user guid.
      *
@@ -213,7 +195,6 @@ public interface INotifyGruDirectoryService
      */
     String getUserGuid( int nPositionUserGuid, int nIdRecord, int nIdDirectory );
 
- 
     /**
      * Gets the record field value.
      *
@@ -222,9 +203,8 @@ public interface INotifyGruDirectoryService
      * @param nIdDirectory the n id directory
      * @return the record field value
      */
-     String getRecordFieldValue( int nPosition, int nIdRecord, int nIdDirectory );
+    String getRecordFieldValue( int nPosition, int nIdRecord, int nIdDirectory );
 
-  
     /**
      * Gets the locale.
      *

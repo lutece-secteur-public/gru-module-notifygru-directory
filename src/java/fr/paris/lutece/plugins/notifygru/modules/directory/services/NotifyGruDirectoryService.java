@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.notifygru.modules.directory.services;
 
-
 import fr.paris.lutece.plugins.directory.business.DirectoryHome;
 import fr.paris.lutece.plugins.directory.business.EntryFilter;
 import fr.paris.lutece.plugins.directory.business.EntryHome;
@@ -58,14 +57,17 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.ReferenceList;
+
 import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
+import javax.inject.Inject;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -80,28 +82,27 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
     // SERVICES
     @Inject
     private IActionService _actionService;
-    
+
     /** The _state service. */
     @Inject
     private IStateService _stateService;
-    
+
     /** The _user attributes manager. */
     @Inject
     private IWorkflowUserAttributesManager _userAttributesManager;
-    
+
     /** The _list accepted entry types email sms. */
     private final List<Integer> _listAcceptedEntryTypesEmailSMS;
-    
+
     /** The _list accepted entry types user guid. */
     private final List<Integer> _listAcceptedEntryTypesUserGuid;
-    
+
     /** The _list refused entry types. */
     private final List<Integer> _listRefusedEntryTypes;
-    
+
     /** The _list accepted entry types file. */
     private final List<Integer> _listAcceptedEntryTypesFile;
 
-   
     /**
      * Instantiates a new notify gru directory service.
      */
