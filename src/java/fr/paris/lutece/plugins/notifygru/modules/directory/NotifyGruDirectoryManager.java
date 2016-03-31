@@ -51,6 +51,7 @@ import fr.paris.lutece.plugins.workflowcore.service.resource.IResourceHistorySer
 import fr.paris.lutece.plugins.workflowcore.service.task.ITask;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
+
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.ReferenceList;
@@ -70,15 +71,17 @@ import javax.inject.Inject;
  */
 public final class NotifyGruDirectoryManager extends AbstractServiceProvider
 {
-	
-	private static Map<String, NotifyGruDirectoryManager> _listProviderNotifyGruDirectory;
-	private static String _strKey = "notifygru-directory.ProviderService.@.";
-	    
+    
+    /** The _list provider notify gru directory. */
+    private static Map<String, NotifyGruDirectoryManager> _listProviderNotifyGruDirectory;
+    
+    /** The _str key. */
+    private static String _strKey = "notifygru-directory.ProviderService.@.";
+
     /**
      * The Constant TEMPLATE_FREEMARKER_LIST.
      */
     private static final String TEMPLATE_FREEMARKER_LIST = "admin/plugins/workflow/modules/notifygru/directory/freemarker_list.html";
-  
 
     /**
      * The _resource history service.
@@ -91,6 +94,8 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
      */
     @Inject
     private INotifyGruDirectoryService _providerDirectoryService;
+    
+    /** The _action dao. */
     @Inject
     private ActionDAO _actionDAO;
 
@@ -105,6 +110,12 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
      * The _n position user guid.
      */
     private int _npositionUserGuid;
+    
+    /** The _nposition user cuid. */
+    private int _npositionUserCuid;
+    
+    /** The _nposition demand reference. */
+    private int _npositionDemandReference;
 
     /**
      * The _n position user phone number.
@@ -126,12 +137,18 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
      */
     private final Plugin _pluginDirectory = PluginService.getPlugin( DirectoryPlugin.PLUGIN_NAME );
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.workflow.modules.notifygru.service.AbstractServiceProvider#isKeyProvider(java.lang.String)
+     */
     @Override
     public Boolean isKeyProvider( String strKey )
     {
         return ( _listProviderNotifyGruDirectory == null ) ? false : _listProviderNotifyGruDirectory.containsKey( strKey );
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.workflow.modules.notifygru.service.AbstractServiceProvider#updateListProvider(fr.paris.lutece.plugins.workflowcore.service.task.ITask)
+     */
     @Override
     public void updateListProvider( ITask task )
     {
@@ -167,14 +184,12 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
                 provider.settitleI18nKey( NotifyGruDirectoryConstants.TITLE_I18NKEY );
                 provider.setIdDirectory( directory.getIdDirectory(  ) );
 
-                provider.setPositionDemandType( AppPropertiesService.getPropertyInt( 
-                        NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_DEMAND_TYPE, 0 ) );
-                provider.setPositionUserEmail( AppPropertiesService.getPropertyInt( 
-                        NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_USER_EMAIL, 0 ) );
-                provider.setPositionUserGuid( AppPropertiesService.getPropertyInt( 
-                        NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_USER_GUID, 0 ) );
-                provider.setPositionUserPhoneNumber( AppPropertiesService.getPropertyInt( 
-                        NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_PHONE_NUMBER, 0 ) );
+                provider.setPositionDemandType( AppPropertiesService.getPropertyInt( NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_DEMAND_TYPE, 0 ) );
+                provider.setPositionUserEmail( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_USER_EMAIL, 0 ) );
+                provider.setPositionUserGuid( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_USER_GUID, 0 ) );
+                provider.setPositionUserPhoneNumber( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_PHONE_NUMBER, 0 ) );
+                provider.setPositionUserCuid( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_CUID, 0 ) );
+                provider.setPositionDemandReference( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_DEMAND_REFERENCE, 0 ) );
 
                 _listProviderNotifyGruDirectory.put( strKeyProvider, provider );
             }
@@ -183,7 +198,54 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
         }
     }
 
-    @Override
+   
+	/**
+	 * Gets the position user cuid.
+	 *
+	 * @return the position user cuid
+	 */
+	public int getPositionUserCuid( ) 
+	{
+		return _npositionUserCuid;
+	}
+
+
+	/**
+	 * Sets the position user cuid.
+	 *
+	 * @param positionUserCuid the new position user cuid
+	 */
+	public void setPositionUserCuid( int positionUserCuid ) 
+	{
+		this._npositionUserCuid = positionUserCuid;
+	}
+
+	
+	/**
+	 * Gets the position demand reference.
+	 *
+	 * @return the position demand reference
+	 */
+	public int getPositionDemandReference( ) 
+	{
+		return _npositionDemandReference;
+	}
+
+	
+	/**
+	 * Sets the position demand reference.
+	 *
+	 * @param positionDemandReference the new position demand reference
+	 */
+	public void setPositionDemandReference( int positionDemandReference ) 
+	{
+		this._npositionDemandReference = positionDemandReference;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.paris.lutece.plugins.workflow.modules.notifygru.service.AbstractServiceProvider#buildReferenteListProvider()
+	 */
+	@Override
     public ReferenceList buildReferenteListProvider(  )
     {
         ReferenceList refenreceList = new ReferenceList(  );
@@ -202,6 +264,9 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
         return refenreceList;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.workflow.modules.notifygru.service.AbstractServiceProvider#getInstanceProvider(java.lang.String)
+     */
     @Override
     public AbstractServiceProvider getInstanceProvider( String strKey )
     {
@@ -226,10 +291,13 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     @Override
     public String getUserGuid( int nIdResource )
     {
-        ResourceHistory resourceHistory = _resourceHistoryService.findByPrimaryKey( nIdResource );
-        Record record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource(  ), _pluginDirectory );
+    	
+    //	  LuteceUser user = SecurityService.getInstance(  ).getRegisteredUser( request );
+    	
+    	 ResourceHistory resourceHistory = _resourceHistoryService.findByPrimaryKey( nIdResource );
+         Record record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource(  ), _pluginDirectory );
 
-        return _providerDirectoryService.getUserGuid( _npositionUserGuid, record.getIdRecord(  ), _nIdDirectory );
+         return _providerDirectoryService.getUserGuid( _npositionUserGuid, record.getIdRecord(  ), _nIdDirectory );
     }
 
     /* (non-Javadoc)
@@ -242,8 +310,8 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
         List<IEntry> lrecord = _providerDirectoryService.getListEntriesFreemarker( _nIdDirectory );
         model.put( NotifyGruDirectoryConstants.MARK_STATE_LIST_MARKER_RESSOURCE, lrecord );
 
-        @SuppressWarnings("deprecation")
-		HtmlTemplate t = AppTemplateService.getTemplateFromStringFtl( AppTemplateService.getTemplate( 
+        @SuppressWarnings( "deprecation" )
+        HtmlTemplate t = AppTemplateService.getTemplateFromStringFtl( AppTemplateService.getTemplate( 
                     TEMPLATE_FREEMARKER_LIST, local, model ).getHtml(  ), local, model );
 
         String strResourceInfo = t.getHtml(  );
@@ -263,7 +331,7 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
         {
             ResourceHistory resourceHistory = _resourceHistoryService.findByPrimaryKey( nIdResource );
             Record record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource(  ), _pluginDirectory );
-          
+
             List<IEntry> listRecordField = _providerDirectoryService.getListEntriesFreemarker( _nIdDirectory );
 
             String strValue;
@@ -319,10 +387,8 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     @Override
     public int getOptionalDemandIdType( int nIdResource )
     {
-        ResourceHistory resourceHistory = _resourceHistoryService.findByPrimaryKey( nIdResource );
-        Record record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource(  ), _pluginDirectory );
-
-        return _providerDirectoryService.getIdDemandType( _npositionDemandType, record.getIdRecord(  ), _nIdDirectory );
+ //do mapping idDirectory => idDemandType
+        return _nIdDirectory;
     }
 
     /**
@@ -436,15 +502,27 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
         this._nIdDirectory = nIdDirectory;
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.workflow.modules.notifygru.service.IProvider#getDemandReference(int)
+     */
     @Override
     public String getDemandReference( int nIdResourceHistory )
     {
-        return "Nothing";
+    	 ResourceHistory resourceHistory = _resourceHistoryService.findByPrimaryKey( nIdResourceHistory );
+         Record record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource(  ), _pluginDirectory );
+
+         return _providerDirectoryService.getRecordFieldValue( _npositionDemandReference, record.getIdRecord(  ), _nIdDirectory );
     }
 
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.workflow.modules.notifygru.service.IProvider#getCustomerId(int)
+     */
     @Override
     public String getCustomerId( int nIdResourceHistory )
     {
-        return "Nothing";
+    	 ResourceHistory resourceHistory = _resourceHistoryService.findByPrimaryKey( nIdResourceHistory );
+         Record record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource(  ), _pluginDirectory );
+
+         return _providerDirectoryService.getRecordFieldValue( _npositionUserCuid, record.getIdRecord(  ), _nIdDirectory );
     }
 }

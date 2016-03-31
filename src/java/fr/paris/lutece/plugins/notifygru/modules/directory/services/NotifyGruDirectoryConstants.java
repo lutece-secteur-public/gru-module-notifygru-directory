@@ -54,12 +54,12 @@ public final class NotifyGruDirectoryConstants
     public static final String TASK_NOTIFY_DIRECTORY_KEY = "taskNotifyDirectory";
 
     // PROPERTIES
-    public static final String PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_EMAIL_SMS = "workflow-notifygru.acceptedDirectoryEntryTypesEmailSMS";
-    public static final String PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_USER_GUID = "workflow-notifygru.acceptedDirectoryEntryTypesUserGuid";
-    public static final String PROPERTY_REFUSED_DIRECTORY_ENTRY_TYPE_USER_GUID = "workflow-notifygru.refusedDirectoryEntryTypes";
-    public static final String PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_FILE = "workflow-notifygru.acceptedDirectoryEntryTypesFile";
-    public static final String PROPERTY_NOTIFY_MAIL_DEFAULT_SENDER_NAME = "workflow-notifygru.notification_mail.default_sender_name";
-    public static final String PROPERTY_SERVER_SMS = "workflow-notifygru.email_server_sms";
+    public static final String PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_EMAIL_SMS = "workflow-notifygrudirectory.acceptedDirectoryEntryTypesEmailSMS";
+    public static final String PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_USER_GUID = "workflow-notifygrudirectory.acceptedDirectoryEntryTypesUserGuid";
+    public static final String PROPERTY_REFUSED_DIRECTORY_ENTRY_TYPE_FOR_PROVIDER_FLUX_JSON = "workflow-notifygrudirectory.refusedDirectoryEntryTypes";
+    public static final String PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_FILE = "workflow-notifygrudirectory.acceptedDirectoryEntryTypesFile";
+    public static final String PROPERTY_NOTIFY_MAIL_DEFAULT_SENDER_NAME = "workflow-notifygrudirectory.notification_mail.default_sender_name";
+    public static final String PROPERTY_SERVER_SMS = "workflow-notifygrudirectory.email_server_sms";
     public static final String PROPERTY_LUTECE_ADMIN_PROD_URL = "lutece.admin.prod.url";
     public static final String PROPERTY_LUTECE_BASE_URL = "lutece.base.url";
     public static final String PROPERTY_LUTECE_PROD_URL = "lutece.prod.url";
@@ -67,6 +67,9 @@ public final class NotifyGruDirectoryConstants
     public static final String PROPERTY_CONFIG_PROVIDER_USER_EMAIL = "notifygru-directory.config.provider.PositionUserEmail";
     public static final String PROPERTY_CONFIG_PROVIDER_USER_GUID = "notifygru-directory.config.provider.PositionUserGuid";
     public static final String PROPERTY_CONFIG_PROVIDER_PHONE_NUMBER = "notifygru-directory.config.provider.PositionUserPhoneNumber";
+    public static final String PROPERTY_CONFIG_PROVIDER_GUID = "notifygru-directory.config.provider.PositionUserGuid";
+    public static final String PROPERTY_CONFIG_PROVIDER_CUID = "notifygru-directory.config.provider.PositionUserCuid";
+    public static final String PROPERTY_CONFIG_PROVIDER_DEMAND_REFERENCE = "notifygru-directory.config.provider.PositionDemandReference";
 
     // MARKS
     public static final String MARK_MESSAGE = "message";

@@ -118,7 +118,7 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
         _listAcceptedEntryTypesFile = fillListEntryTypes( NotifyGruDirectoryConstants.PROPERTY_ACCEPTED_DIRECTORY_ENTRY_TYPE_FILE );
 
         // Init list refused entry types
-        _listRefusedEntryTypes = fillListEntryTypes( NotifyGruDirectoryConstants.PROPERTY_REFUSED_DIRECTORY_ENTRY_TYPE_USER_GUID );
+        _listRefusedEntryTypes = fillListEntryTypes( NotifyGruDirectoryConstants.PROPERTY_REFUSED_DIRECTORY_ENTRY_TYPE_FOR_PROVIDER_FLUX_JSON );
     }
 
     /**
