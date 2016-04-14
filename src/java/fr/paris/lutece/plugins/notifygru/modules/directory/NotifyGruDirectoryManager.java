@@ -198,6 +198,52 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
         }
     }
 
+    
+    @Override
+    public void updateListProvider(  )
+    {
+        DirectoryFilter filter = new DirectoryFilter(  );
+
+        List<Directory> listDirectory = DirectoryHome.getDirectoryList( filter, _pluginDirectory );
+
+        if ( _listProviderNotifyGruDirectory == null )
+        {
+            _listProviderNotifyGruDirectory = new HashMap<String, NotifyGruDirectoryManager>(  );
+        }
+
+        for ( Directory directory : listDirectory )
+        {
+            String strKeyProvider = _strKey + directory.getIdDirectory(  );
+            String strBeanName = _strKey + directory.getIdDirectory(  );
+
+          
+
+            if ( !_listProviderNotifyGruDirectory.containsKey( strKeyProvider )   )
+            {
+                //   NotifyGruDirectory provider = new NotifyGruDirectory(strKeyProvider, strTitleI18nKey, strBeanName, position, directory.getIdDirectory());
+                NotifyGruDirectoryManager provider = new NotifyGruDirectoryManager(  );
+                provider._resourceHistoryService = _resourceHistoryService;
+                provider._actionDAO = _actionDAO;
+                provider._providerDirectoryService = _providerDirectoryService;
+
+                provider.setBeanName( strBeanName );
+                provider.setKey( strKeyProvider );
+                provider.settitleI18nKey( NotifyGruDirectoryConstants.TITLE_I18NKEY );
+                provider.setIdDirectory( directory.getIdDirectory(  ) );
+
+                provider.setPositionDemandType( AppPropertiesService.getPropertyInt( NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_DEMAND_TYPE, 0 ) );
+                provider.setPositionUserEmail( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_USER_EMAIL, 0 ) );
+                provider.setPositionUserGuid( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_USER_GUID, 0 ) );
+                provider.setPositionUserPhoneNumber( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_PHONE_NUMBER, 0 ) );
+                provider.setPositionUserCuid( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_CUID, 0 ) );
+                provider.setPositionDemandReference( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_DEMAND_REFERENCE, 0 ) );
+
+                _listProviderNotifyGruDirectory.put( strKeyProvider, provider );
+            }
+
+            //
+        }
+    }
    
 	/**
 	 * Gets the position user cuid.
@@ -525,4 +571,20 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
 
          return _providerDirectoryService.getRecordFieldValue( _npositionUserCuid, record.getIdRecord(  ), _nIdDirectory );
     }
+
+	@Override
+	public ReferenceList getReferenteListEntityProvider()
+	{
+		// TODO Auto-generated method stub		
+		ReferenceList refenreceList = new ReferenceList(  );      
+        List<IEntry> listRecordField = _providerDirectoryService.getListEntriesFreemarker( _nIdDirectory );
+          for ( IEntry recordField : listRecordField )        	  
+          {
+        	   refenreceList.addItem( recordField.getPosition(), recordField.getTitle() );
+          }          
+          return refenreceList;
+	}
+
+
+
 }
