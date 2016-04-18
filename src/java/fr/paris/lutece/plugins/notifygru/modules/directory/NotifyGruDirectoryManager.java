@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.notifygru.modules.directory;
 
+
 import fr.paris.lutece.plugins.directory.business.Directory;
 import fr.paris.lutece.plugins.directory.business.DirectoryFilter;
 import fr.paris.lutece.plugins.directory.business.DirectoryHome;
@@ -40,6 +41,9 @@ import fr.paris.lutece.plugins.directory.business.IEntry;
 import fr.paris.lutece.plugins.directory.business.Record;
 import fr.paris.lutece.plugins.directory.business.RecordHome;
 import fr.paris.lutece.plugins.directory.service.DirectoryPlugin;
+import fr.paris.lutece.plugins.modulenotifygrumappingmanager.business.NotifygruMappingManager;
+import fr.paris.lutece.plugins.modulenotifygrumappingmanager.business.NotifygruMappingManagerHome;
+import fr.paris.lutece.plugins.notifygru.modules.directory.services.IDemandTypeService;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryConstants;
 import fr.paris.lutece.plugins.workflow.business.action.ActionDAO;
@@ -51,9 +55,9 @@ import fr.paris.lutece.plugins.workflowcore.service.resource.IResourceHistorySer
 import fr.paris.lutece.plugins.workflowcore.service.task.ITask;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
-
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
-import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
@@ -77,6 +81,8 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     
     /** The _str key. */
     private static String _strKey = "notifygru-directory.ProviderService.@.";
+    private static final String BEAN_SERVICE_DEMAND_TYPE = "notifygru-directory.DefaultDemandTypeService";
+    private static IDemandTypeService _beanDemandTypeService;
 
     /**
      * The Constant TEMPLATE_FREEMARKER_LIST.
@@ -183,13 +189,27 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
                 provider.setKey( strKeyProvider );
                 provider.settitleI18nKey( NotifyGruDirectoryConstants.TITLE_I18NKEY );
                 provider.setIdDirectory( directory.getIdDirectory(  ) );
+                provider.setManagerProvider( true );
+                
+                
+                NotifygruMappingManager mapping = NotifygruMappingManagerHome.findByPrimaryKey( strBeanName );
+                
+                if( mapping != null )
+                {
+                	   provider.setPositionDemandType( 0 );
+                       provider.setPositionUserEmail( mapping.getEmail( ) );
+                       provider.setPositionUserGuid( 0 );
+                       provider.setPositionUserPhoneNumber( mapping.getMobilePhoneNumber( ) );
+                       provider.setPositionUserCuid( 0 );
+                       provider.setPositionDemandReference( 0 );
+                }
 
-                provider.setPositionDemandType( AppPropertiesService.getPropertyInt( NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_DEMAND_TYPE, 0 ) );
-                provider.setPositionUserEmail( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_USER_EMAIL, 0 ) );
-                provider.setPositionUserGuid( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_USER_GUID, 0 ) );
-                provider.setPositionUserPhoneNumber( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_PHONE_NUMBER, 0 ) );
-                provider.setPositionUserCuid( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_CUID, 0 ) );
-                provider.setPositionDemandReference( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_DEMAND_REFERENCE, 0 ) );
+//                provider.setPositionDemandType( AppPropertiesService.getPropertyInt( NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_DEMAND_TYPE, 0 ) );
+//                provider.setPositionUserEmail( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_USER_EMAIL, 0 ) );
+//                provider.setPositionUserGuid( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_USER_GUID, 0 ) );
+//                provider.setPositionUserPhoneNumber( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_PHONE_NUMBER, 0 ) );
+//                provider.setPositionUserCuid( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_CUID, 0 ) );
+//                provider.setPositionDemandReference( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_DEMAND_REFERENCE, 0 ) );
 
                 _listProviderNotifyGruDirectory.put( strKeyProvider, provider );
             }
@@ -230,14 +250,18 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
                 provider.setKey( strKeyProvider );
                 provider.settitleI18nKey( NotifyGruDirectoryConstants.TITLE_I18NKEY );
                 provider.setIdDirectory( directory.getIdDirectory(  ) );
+                provider.setManagerProvider( true );
 
-                provider.setPositionDemandType( AppPropertiesService.getPropertyInt( NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_DEMAND_TYPE, 0 ) );
-                provider.setPositionUserEmail( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_USER_EMAIL, 0 ) );
-                provider.setPositionUserGuid( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_USER_GUID, 0 ) );
-                provider.setPositionUserPhoneNumber( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_PHONE_NUMBER, 0 ) );
-                provider.setPositionUserCuid( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_CUID, 0 ) );
-                provider.setPositionDemandReference( AppPropertiesService.getPropertyInt(  NotifyGruDirectoryConstants.PROPERTY_CONFIG_PROVIDER_DEMAND_REFERENCE, 0 ) );
-
+                NotifygruMappingManager mapping = NotifygruMappingManagerHome.findByPrimaryKey( strBeanName );
+                if( mapping != null )
+                {
+                	   provider.setPositionDemandType( 0 );
+                       provider.setPositionUserEmail( mapping.getEmail( ) );
+                       provider.setPositionUserGuid( 0 );
+                       provider.setPositionUserPhoneNumber( mapping.getMobilePhoneNumber( ) );
+                       provider.setPositionUserCuid( 0 );
+                       provider.setPositionDemandReference( 0 );
+                }
                 _listProviderNotifyGruDirectory.put( strKeyProvider, provider );
             }
 
@@ -433,8 +457,17 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     @Override
     public int getOptionalDemandIdType( int nIdResource )
     {
- //do mapping idDirectory => idDemandType
-        return _nIdDirectory;
+        Directory directory = DirectoryHome.findByPrimaryKey( getIdDirectory(  ), _pluginDirectory );
+
+           if ( _beanDemandTypeService == null )
+           {
+               _beanDemandTypeService = SpringContextService.getBean( BEAN_SERVICE_DEMAND_TYPE );
+           }
+
+           int nDemandType = _beanDemandTypeService.getDemandType( directory );
+           AppLogService.info( "DemandTypeId : " + nDemandType );
+
+           return nDemandType;
     }
 
     /**

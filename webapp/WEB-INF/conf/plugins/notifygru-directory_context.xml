@@ -19,5 +19,6 @@
                  />
         
            <bean id="notifygru-directory.ProviderDirectoryService" class="fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryService" />
+            <bean id="notifygru-directory.DefaultDemandTypeService" class="fr.paris.lutece.plugins.notifygru.modules.directory.services.DefaultDemandTypeService" />
     
 </beans>
