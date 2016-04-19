@@ -599,7 +599,7 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     @Override
     public String getDemandReference( int nIdResourceHistory )
     {
-    	   return _providerDirectoryService.getRecordFieldValue( _npositionDemandReference, getRecord( nIdResourceHistory ).getIdRecord( ), _nIdDirectory );
+    	   return _providerDirectoryService.getRecordFieldValue( _npositionDemandReference, getRecord( nIdResourceHistory ).getIdRecord( ), _nIdDirectory )+"-"+getOptionalDemandId( nIdResourceHistory );
     }
 
     /* (non-Javadoc)
