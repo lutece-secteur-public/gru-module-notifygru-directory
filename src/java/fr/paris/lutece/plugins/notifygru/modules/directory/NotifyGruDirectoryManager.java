@@ -219,6 +219,7 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
         {
             _listProviderNotifyGruDirectory = new HashMap<String, NotifyGruDirectoryManager>(  );
         }
+       
 
         for ( Directory directory : listDirectory )
         {
@@ -229,7 +230,7 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
 
             Workflow wf = action.getWorkflow(  );
 
-            if ( !_listProviderNotifyGruDirectory.containsKey( strKeyProvider ) && directory.isEnabled(  ) &&
+            if ( !_listProviderNotifyGruDirectory.containsKey( strKeyProvider )  &&
                     ( wf.getId(  ) == directory.getIdWorkflow(  ) ) )
             {
                 //   NotifyGruDirectory provider = new NotifyGruDirectory(strKeyProvider, strTitleI18nKey, strBeanName, position, directory.getIdDirectory());
@@ -252,14 +253,20 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
                 	 
                        provider.setPositionUserEmail( mapping.getEmail( ) );
                        provider.setPositionUserPhoneNumber( mapping.getMobilePhoneNumber( ) );
-                       provider.setPositionUserGuid( 3 );                     
-                       provider.setPositionUserCuid( 4 );
-                       provider.setPositionDemandReference( 5 );
+                       provider.setPositionUserGuid( 0 );                     
+                       provider.setPositionUserCuid( 0 );
+                       provider.setPositionDemandReference( 0 );
                 }
 
 
                 _listProviderNotifyGruDirectory.put( strKeyProvider, provider );
             }
+            else if(_listProviderNotifyGruDirectory.containsKey( strKeyProvider ) && wf.getId(  ) != directory.getIdWorkflow(  ))
+            {
+            //must be clear to check again all form directory aosscited or not to this workflow
+                _listProviderNotifyGruDirectory.remove(strKeyProvider);
+            }
+                
 
             //
         }
@@ -307,9 +314,9 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
                 {
                 	   provider.setPositionUserEmail( mapping.getEmail( ) );
                        provider.setPositionUserPhoneNumber( mapping.getMobilePhoneNumber( ) );
-                       provider.setPositionUserGuid( 3 );                     
-                       provider.setPositionUserCuid( 4 );
-                       provider.setPositionDemandReference( 5 );
+                       provider.setPositionUserGuid( 0 );                     
+                       provider.setPositionUserCuid( 0 );
+                       provider.setPositionDemandReference( 0 );
                 }
                 _listProviderNotifyGruDirectory.put( strKeyProvider, provider );
             }
@@ -407,7 +414,9 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     @Override
     public String getUserGuid( int nIdResourceHistory )
     {
-     return _providerDirectoryService.getUserGuid( _npositionUserGuid,getRecord( nIdResourceHistory ).getIdRecord( ), _nIdDirectory );
+    	
+    	return "680a9e86-ffdc-45e6-a3c6-e3020b487624";
+   //  return _providerDirectoryService.getUserGuid( _npositionUserGuid,getRecord( nIdResourceHistory ).getIdRecord( ), _nIdDirectory );
     }
 
     /* (non-Javadoc)

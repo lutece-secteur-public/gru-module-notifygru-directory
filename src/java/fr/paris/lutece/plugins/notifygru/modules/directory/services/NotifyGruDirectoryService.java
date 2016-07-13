@@ -482,7 +482,7 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
             {
                 RecordField recordFieldIdDemand = listRecordFields.get( 0 );
                 strRecordFieldValue = recordFieldIdDemand.getValue(  );
-
+                
                 if ( recordFieldIdDemand.getField(  ) != null )
                 {
                     strRecordFieldValue = recordFieldIdDemand.getField(  ).getTitle(  );
