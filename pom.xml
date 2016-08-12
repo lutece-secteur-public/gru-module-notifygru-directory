@@ -10,7 +10,7 @@
     <groupId>fr.paris.lutece.plugins</groupId>
     <artifactId>module-notifygru-directory</artifactId>
     <packaging>lutece-plugin</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <name>Lutece notifygru Directory module</name>
 
     <repositories>
