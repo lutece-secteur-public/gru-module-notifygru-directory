@@ -58,6 +58,7 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.service.util.AppLogService;
+import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
@@ -625,17 +626,48 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
 	 */
 	@Override
 	public ReferenceList getReferenteListEntityProvider()
-	{
-			
+	{		
 		ReferenceList refenreceList = new ReferenceList(  );      
         List<IEntry> listRecordField = _providerDirectoryService.getListEntriesFreemarker( _nIdDirectory );
-          for ( IEntry recordField : listRecordField )        	  
-          {
-        	   refenreceList.addItem( recordField.getPosition(), recordField.getTitle() );
-          }          
-          return refenreceList;
+        
+        ReferenceList referenceList = new ReferenceList(  );
+
+        for ( IEntry entry : listRecordField )
+        {
+            if ( entry.getEntryType(  ).getComment(  ) )
+            {
+                continue;
+            }
+
+            if ( entry.getEntryType(  ).getGroup(  ) )
+            {
+                if ( entry.getChildren(  ) != null )
+                {
+                    for ( IEntry child : entry.getChildren(  ) )
+                    {
+                        if ( child.getEntryType(  ).getComment(  ) )
+                        {
+                            continue;
+                        }
+
+                        ReferenceItem referenceItem = new ReferenceItem(  );
+                        referenceItem.setCode( String.valueOf( child.getPosition(  ) ) );
+                        referenceItem.setName( child.getTitle(  ) );
+                        referenceList.add( referenceItem );
+                    }
+                }
+            }
+            else
+            {
+                ReferenceItem referenceItem = new ReferenceItem(  );
+                referenceItem.setCode( String.valueOf( entry.getPosition(  ) ) );
+                referenceItem.setName( entry.getTitle(  ) );
+                referenceList.add( referenceItem );
+            }
+        }
+
+        return referenceList;
+      
 	}
-
-
 
 }
