@@ -39,9 +39,9 @@ import fr.paris.lutece.plugins.directory.business.DirectoryHome;
 import fr.paris.lutece.plugins.directory.business.IEntry;
 import fr.paris.lutece.plugins.directory.business.Record;
 import fr.paris.lutece.plugins.directory.business.RecordHome;
+import fr.paris.lutece.plugins.directory.modules.mappingmanager.business.DirectoryMappingManager;
+import fr.paris.lutece.plugins.directory.modules.mappingmanager.business.DirectoryMappingManagerHome;
 import fr.paris.lutece.plugins.directory.service.DirectoryPlugin;
-import fr.paris.lutece.plugins.modulenotifygrumappingmanager.business.NotifygruMappingManager;
-import fr.paris.lutece.plugins.modulenotifygrumappingmanager.business.NotifygruMappingManagerHome;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.IDemandTypeService;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryConstants;
@@ -151,7 +151,7 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     /** The _record. */
     private Record _record;
 
-    private NotifygruMappingManager _mapping;
+    private NotifyGruDirectoryManager _mapping;
     
     
  
@@ -231,8 +231,7 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
 
             Workflow wf = action.getWorkflow(  );
 
-            if ( !_listProviderNotifyGruDirectory.containsKey( strKeyProvider )  &&
-                    ( wf.getId(  ) == directory.getIdWorkflow(  ) ) )
+            if ( ( wf.getId(  ) == directory.getIdWorkflow(  ) ) )
             {
                 //   NotifyGruDirectory provider = new NotifyGruDirectory(strKeyProvider, strTitleI18nKey, strBeanName, position, directory.getIdDirectory());
                 NotifyGruDirectoryManager provider = new NotifyGruDirectoryManager(  );
@@ -247,16 +246,16 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
                 provider.setManagerProvider( true );
                 
                 
-                NotifygruMappingManager mapping = NotifygruMappingManagerHome.findByPrimaryKey( strBeanName );
+                DirectoryMappingManager mapping = DirectoryMappingManagerHome.findByPrimaryKey( strBeanName );
                 
                 if( mapping != null )
                 {
                 	 
                        provider.setPositionUserEmail( mapping.getEmail( ) );
                        provider.setPositionUserPhoneNumber( mapping.getMobilePhoneNumber( ) );
-                       provider.setPositionUserGuid( 0 );                     
-                       provider.setPositionUserCuid( 0 );
-                       provider.setPositionDemandReference( 0 );
+                       provider.setPositionUserGuid( mapping.getGuid( ) );                     
+                       provider.setPositionUserCuid( mapping.getCustomerId( ) );
+                       provider.setPositionDemandReference( mapping.getReferenceDemand( ) );
                 }
 
 
@@ -310,14 +309,16 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
                 provider.setIdDirectory( directory.getIdDirectory(  ) );
                 provider.setManagerProvider( true );
 
-                NotifygruMappingManager mapping = NotifygruMappingManagerHome.findByPrimaryKey( strBeanName );
+                DirectoryMappingManager mapping = DirectoryMappingManagerHome.findByPrimaryKey( strBeanName );
+                
                 if( mapping != null )
                 {
-                	   provider.setPositionUserEmail( mapping.getEmail( ) );
+                	 
+                       provider.setPositionUserEmail( mapping.getEmail( ) );
                        provider.setPositionUserPhoneNumber( mapping.getMobilePhoneNumber( ) );
-                       provider.setPositionUserGuid( 0 );                     
-                       provider.setPositionUserCuid( 0 );
-                       provider.setPositionDemandReference( 0 );
+                       provider.setPositionUserGuid( mapping.getGuid( ) );                     
+                       provider.setPositionUserCuid( mapping.getCustomerId( ) );
+                       provider.setPositionDemandReference( mapping.getReferenceDemand( ) );
                 }
                 _listProviderNotifyGruDirectory.put( strKeyProvider, provider );
             }
@@ -416,8 +417,8 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     public String getUserGuid( int nIdResourceHistory )
     {
     	
-    	return "680a9e86-ffdc-45e6-a3c6-e3020b487624";
-   //  return _providerDirectoryService.getUserGuid( _npositionUserGuid,getRecord( nIdResourceHistory ).getIdRecord( ), _nIdDirectory );
+    	//return "680a9e86-ffdc-45e6-a3c6-e3020b487624";
+        return _providerDirectoryService.getUserGuid( _npositionUserGuid,getRecord( nIdResourceHistory ).getIdRecord( ), _nIdDirectory );
     }
 
     /* (non-Javadoc)
