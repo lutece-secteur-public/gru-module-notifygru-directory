@@ -56,7 +56,7 @@ public class DefaultDemandTypeService implements IDemandTypeService
 
         if ( directory != null )
         {
-            int nIdType = directory.getIdDirectory();
+            int nIdType = directory.getIdDirectory(  );
             nDemandType = AppPropertiesService.getPropertyInt( PARAMS_CONFIG + nIdType, nIdType );
         }
 

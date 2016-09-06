@@ -36,15 +36,11 @@ package fr.paris.lutece.plugins.notifygru.modules.directory.services;
 import fr.paris.lutece.plugins.directory.business.Directory;
 
 
-
-
-// TODO: Auto-generated Javadoc
 /**
  * The Interface IDemandTypeService.
  */
 public interface IDemandTypeService
 {
-   
     /**
      * Gets the demand type.
      *

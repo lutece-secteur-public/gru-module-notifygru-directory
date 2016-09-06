@@ -70,22 +70,20 @@ import java.util.Map;
 import javax.inject.Inject;
 
 
-
 /**
  * The Class NotifyGruDirectory.
  */
 public final class NotifyGruDirectoryManager extends AbstractServiceProvider
 {
-    
     /** The _list provider notify gru directory. */
     private static Map<String, NotifyGruDirectoryManager> _listProviderNotifyGruDirectory;
-    
+
     /** The _str key. */
     private static String _strKey = "notifygru-directory.ProviderService.@.";
-    
+
     /** The Constant BEAN_SERVICE_DEMAND_TYPE. */
     private static final String BEAN_SERVICE_DEMAND_TYPE = "notifygru-directory.DefaultDemandTypeService";
-    
+
     /** The _bean demand type service. */
     private static IDemandTypeService _beanDemandTypeService;
 
@@ -105,7 +103,7 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
      */
     @Inject
     private INotifyGruDirectoryService _providerDirectoryService;
-    
+
     /** The _action dao. */
     @Inject
     private ActionDAO _actionDAO;
@@ -121,10 +119,10 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
      * The _n position user guid.
      */
     private int _npositionUserGuid;
-    
+
     /** The _nposition user cuid. */
     private int _npositionUserCuid;
-    
+
     /** The _nposition demand reference. */
     private int _npositionDemandReference;
 
@@ -132,7 +130,6 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
      * The _n position user phone number.
      */
     private int _npositionUserPhoneNumber;
-
 
     /**
      * The _n id directory.
@@ -144,19 +141,12 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
      */
     private final Plugin _pluginDirectory = PluginService.getPlugin( DirectoryPlugin.PLUGIN_NAME );
 
-    
     /** The _resource history. */
     private ResourceHistory _resourceHistory;
-    
+
     /** The _record. */
     private Record _record;
 
-    private NotifyGruDirectoryManager _mapping;
-    
-    
- 
-    
-    
     /**
      * Gets the record.
      *
@@ -165,18 +155,21 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
      */
     private Record getRecord( int nIdResourceHistory )
     {
-    	if( ( _record == null ) || (  _resourceHistory != null && nIdResourceHistory != _resourceHistory.getId( ) ) )
+        if ( ( _record == null ) ||
+                ( ( _resourceHistory != null ) && ( nIdResourceHistory != _resourceHistory.getId(  ) ) ) )
         {
-    		_record = RecordHome.findByPrimaryKey( getResourceHistory( nIdResourceHistory ).getIdResource(  ), _pluginDirectory );
+            _record = RecordHome.findByPrimaryKey( getResourceHistory( nIdResourceHistory ).getIdResource(  ),
+                    _pluginDirectory );
         }
-    	
-    	if( _record == null )
-    	{    	
-    		throw new AppException( "_record is NULL" );
-    	}
-    	return _record;
+
+        if ( _record == null )
+        {
+            throw new AppException( "_record is NULL" );
+        }
+
+        return _record;
     }
-    
+
     /**
      * Gets the resource history.
      *
@@ -185,18 +178,20 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
      */
     private ResourceHistory getResourceHistory( int nIdResourceHistory )
     {
-    	if( ( _resourceHistory == null ) || (  _resourceHistory != null && nIdResourceHistory != _resourceHistory.getId( ) ) )
+        if ( ( _resourceHistory == null ) ||
+                ( ( _resourceHistory != null ) && ( nIdResourceHistory != _resourceHistory.getId(  ) ) ) )
         {
-        	_resourceHistory = _resourceHistoryService.findByPrimaryKey( nIdResourceHistory );
+            _resourceHistory = _resourceHistoryService.findByPrimaryKey( nIdResourceHistory );
         }
-    	
-    	if( _resourceHistory == null )
-    	{    	
-    		throw new AppException( "Ressource History is NULL" );
-    	}
-    	return _resourceHistory;
+
+        if ( _resourceHistory == null )
+        {
+            throw new AppException( "Ressource History is NULL" );
+        }
+
+        return _resourceHistory;
     }
-    
+
     /* (non-Javadoc)
      * @see fr.paris.lutece.plugins.workflow.modules.notifygru.service.AbstractServiceProvider#isKeyProvider(java.lang.String)
      */
@@ -220,7 +215,6 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
         {
             _listProviderNotifyGruDirectory = new HashMap<String, NotifyGruDirectoryManager>(  );
         }
-       
 
         for ( Directory directory : listDirectory )
         {
@@ -241,38 +235,34 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
 
                 provider.setBeanName( strBeanName );
                 provider.setKey( strKeyProvider );
-                provider.settitleI18nKey( NotifyGruDirectoryConstants.TITLE_I18NKEY );
+                provider.setTitleI18nKey( NotifyGruDirectoryConstants.TITLE_I18NKEY );
                 provider.setIdDirectory( directory.getIdDirectory(  ) );
                 provider.setManagerProvider( true );
-                
-                
-                DirectoryMappingManager mapping = DirectoryMappingManagerHome.findByPrimaryKey( strBeanName );
-                
-                if( mapping != null )
-                {
-                	 
-                       provider.setPositionUserEmail( mapping.getEmail( ) );
-                       provider.setPositionUserPhoneNumber( mapping.getMobilePhoneNumber( ) );
-                       provider.setPositionUserGuid( mapping.getGuid( ) );                     
-                       provider.setPositionUserCuid( mapping.getCustomerId( ) );
-                       provider.setPositionDemandReference( mapping.getReferenceDemand( ) );
-                }
 
+                DirectoryMappingManager mapping = DirectoryMappingManagerHome.findByPrimaryKey( strBeanName );
+
+                if ( mapping != null )
+                {
+                    provider.setPositionUserEmail( mapping.getEmail(  ) );
+                    provider.setPositionUserPhoneNumber( mapping.getMobilePhoneNumber(  ) );
+                    provider.setPositionUserGuid( mapping.getGuid(  ) );
+                    provider.setPositionUserCuid( mapping.getCustomerId(  ) );
+                    provider.setPositionDemandReference( mapping.getReferenceDemand(  ) );
+                }
 
                 _listProviderNotifyGruDirectory.put( strKeyProvider, provider );
             }
-            else if(_listProviderNotifyGruDirectory.containsKey( strKeyProvider ) && wf.getId(  ) != directory.getIdWorkflow(  ))
+            else if ( _listProviderNotifyGruDirectory.containsKey( strKeyProvider ) &&
+                    ( wf.getId(  ) != directory.getIdWorkflow(  ) ) )
             {
-            //must be clear to check again all form directory aosscited or not to this workflow
-                _listProviderNotifyGruDirectory.remove(strKeyProvider);
+                //must be clear to check again all form directory aosscited or not to this workflow
+                _listProviderNotifyGruDirectory.remove( strKeyProvider );
             }
-                
 
             //
         }
     }
 
-    
     /* (non-Javadoc)
      * @see fr.paris.lutece.plugins.workflow.modules.notifygru.service.AbstractServiceProvider#updateListProvider()
      */
@@ -293,9 +283,7 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
             String strKeyProvider = _strKey + directory.getIdDirectory(  );
             String strBeanName = _strKey + directory.getIdDirectory(  );
 
-          
-
-            if ( !_listProviderNotifyGruDirectory.containsKey( strKeyProvider )   )
+            if ( !_listProviderNotifyGruDirectory.containsKey( strKeyProvider ) )
             {
                 //   NotifyGruDirectory provider = new NotifyGruDirectory(strKeyProvider, strTitleI18nKey, strBeanName, position, directory.getIdDirectory());
                 NotifyGruDirectoryManager provider = new NotifyGruDirectoryManager(  );
@@ -305,82 +293,78 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
 
                 provider.setBeanName( strBeanName );
                 provider.setKey( strKeyProvider );
-                provider.settitleI18nKey( NotifyGruDirectoryConstants.TITLE_I18NKEY );
+                provider.setTitleI18nKey( NotifyGruDirectoryConstants.TITLE_I18NKEY );
                 provider.setIdDirectory( directory.getIdDirectory(  ) );
                 provider.setManagerProvider( true );
 
                 DirectoryMappingManager mapping = DirectoryMappingManagerHome.findByPrimaryKey( strBeanName );
-                
-                if( mapping != null )
+
+                if ( mapping != null )
                 {
-                	 
-                       provider.setPositionUserEmail( mapping.getEmail( ) );
-                       provider.setPositionUserPhoneNumber( mapping.getMobilePhoneNumber( ) );
-                       provider.setPositionUserGuid( mapping.getGuid( ) );                     
-                       provider.setPositionUserCuid( mapping.getCustomerId( ) );
-                       provider.setPositionDemandReference( mapping.getReferenceDemand( ) );
+                    provider.setPositionUserEmail( mapping.getEmail(  ) );
+                    provider.setPositionUserPhoneNumber( mapping.getMobilePhoneNumber(  ) );
+                    provider.setPositionUserGuid( mapping.getGuid(  ) );
+                    provider.setPositionUserCuid( mapping.getCustomerId(  ) );
+                    provider.setPositionDemandReference( mapping.getReferenceDemand(  ) );
                 }
+
                 _listProviderNotifyGruDirectory.put( strKeyProvider, provider );
             }
 
             //
         }
     }
-   
-	/**
-	 * Gets the position user cuid.
-	 *
-	 * @return the position user cuid
-	 */
-	public int getPositionUserCuid( ) 
-	{
-		return _npositionUserCuid;
-	}
 
+    /**
+     * Gets the position user cuid.
+     *
+     * @return the position user cuid
+     */
+    public int getPositionUserCuid(  )
+    {
+        return _npositionUserCuid;
+    }
 
-	/**
-	 * Sets the position user cuid.
-	 *
-	 * @param positionUserCuid the new position user cuid
-	 */
-	public void setPositionUserCuid( int positionUserCuid ) 
-	{
-		this._npositionUserCuid = positionUserCuid;
-	}
+    /**
+     * Sets the position user cuid.
+     *
+     * @param positionUserCuid the new position user cuid
+     */
+    public void setPositionUserCuid( int positionUserCuid )
+    {
+        this._npositionUserCuid = positionUserCuid;
+    }
 
-	
-	/**
-	 * Gets the position demand reference.
-	 *
-	 * @return the position demand reference
-	 */
-	public int getPositionDemandReference( ) 
-	{
-		return _npositionDemandReference;
-	}
+    /**
+     * Gets the position demand reference.
+     *
+     * @return the position demand reference
+     */
+    public int getPositionDemandReference(  )
+    {
+        return _npositionDemandReference;
+    }
 
-	
-	/**
-	 * Sets the position demand reference.
-	 *
-	 * @param positionDemandReference the new position demand reference
-	 */
-	public void setPositionDemandReference( int positionDemandReference ) 
-	{
-		this._npositionDemandReference = positionDemandReference;
-	}
+    /**
+     * Sets the position demand reference.
+     *
+     * @param positionDemandReference the new position demand reference
+     */
+    public void setPositionDemandReference( int positionDemandReference )
+    {
+        this._npositionDemandReference = positionDemandReference;
+    }
 
-	/* (non-Javadoc)
-	 * @see fr.paris.lutece.plugins.workflow.modules.notifygru.service.AbstractServiceProvider#buildReferenteListProvider()
-	 */
-	@Override
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.workflow.modules.notifygru.service.AbstractServiceProvider#buildReferenteListProvider()
+     */
+    @Override
     public ReferenceList buildReferenteListProvider(  )
     {
         ReferenceList refenreceList = new ReferenceList(  );
 
         for ( Map.Entry<String, NotifyGruDirectoryManager> entrySet : _listProviderNotifyGruDirectory.entrySet(  ) )
         {
-            String key = entrySet.getKey(  );
             NotifyGruDirectoryManager provider = entrySet.getValue(  );
 
             Directory directory = DirectoryHome.findByPrimaryKey( provider.getIdDirectory(  ), _pluginDirectory );
@@ -407,7 +391,8 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     @Override
     public String getUserEmail( int nIdResourceHistory )
     {
-           return _providerDirectoryService.getEmail( _npositionUserEmail, getRecord( nIdResourceHistory ).getIdRecord( ), _nIdDirectory );
+        return _providerDirectoryService.getEmail( _npositionUserEmail,
+            getRecord( nIdResourceHistory ).getIdRecord(  ), _nIdDirectory );
     }
 
     /* (non-Javadoc)
@@ -416,9 +401,9 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     @Override
     public String getUserGuid( int nIdResourceHistory )
     {
-    	
-    	//return "680a9e86-ffdc-45e6-a3c6-e3020b487624";
-        return _providerDirectoryService.getUserGuid( _npositionUserGuid,getRecord( nIdResourceHistory ).getIdRecord( ), _nIdDirectory );
+        //return "680a9e86-ffdc-45e6-a3c6-e3020b487624";
+        return _providerDirectoryService.getUserGuid( _npositionUserGuid,
+            getRecord( nIdResourceHistory ).getIdRecord(  ), _nIdDirectory );
     }
 
     /* (non-Javadoc)
@@ -449,13 +434,14 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
         Map<String, Object> model = new HashMap<String, Object>(  );
 
         if ( nIdResourceHistory > 0 )
-        {         
+        {
             List<IEntry> listRecordField = _providerDirectoryService.getListEntriesFreemarker( _nIdDirectory );
             String strValue;
+
             for ( IEntry recordField : listRecordField )
             {
                 strValue = _providerDirectoryService.getRecordFieldValue( recordField.getPosition(  ),
-                		getRecord( nIdResourceHistory ).getIdRecord( ), _nIdDirectory );
+                        getRecord( nIdResourceHistory ).getIdRecord(  ), _nIdDirectory );
                 model.put( NotifyGruDirectoryConstants.MARK_POSITION + recordField.getPosition(  ), strValue );
             }
         }
@@ -478,9 +464,8 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     @Override
     public String getOptionalMobilePhoneNumber( int nIdResourceHistory )
     {
-      
-        return _providerDirectoryService.getSMSPhoneNumber( _npositionUserPhoneNumber, getRecord( nIdResourceHistory ).getIdRecord( ),
-            _nIdDirectory );
+        return _providerDirectoryService.getSMSPhoneNumber( _npositionUserPhoneNumber,
+            getRecord( nIdResourceHistory ).getIdRecord(  ), _nIdDirectory );
     }
 
     /* (non-Javadoc)
@@ -489,7 +474,7 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     @Override
     public int getOptionalDemandId( int nIdResourceHistory )
     {
-         return getRecord( nIdResourceHistory ).getIdRecord( );
+        return getRecord( nIdResourceHistory ).getIdRecord(  );
     }
 
     /* (non-Javadoc)
@@ -500,15 +485,15 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     {
         Directory directory = DirectoryHome.findByPrimaryKey( getIdDirectory(  ), _pluginDirectory );
 
-           if ( _beanDemandTypeService == null )
-           {
-               _beanDemandTypeService = SpringContextService.getBean( BEAN_SERVICE_DEMAND_TYPE );
-           }
+        if ( _beanDemandTypeService == null )
+        {
+            _beanDemandTypeService = SpringContextService.getBean( BEAN_SERVICE_DEMAND_TYPE );
+        }
 
-           int nDemandType = _beanDemandTypeService.getDemandType( directory );
-           AppLogService.info( "DemandTypeId : " + nDemandType );
+        int nDemandType = _beanDemandTypeService.getDemandType( directory );
+        AppLogService.info( "DemandTypeId : " + nDemandType );
 
-           return nDemandType;
+        return nDemandType;
     }
 
     /**
@@ -582,8 +567,6 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
         this._npositionUserPhoneNumber = npositionUserPhoneNumber;
     }
 
-   
-
     /**
      * Gets the id directory.
      *
@@ -610,7 +593,9 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
     @Override
     public String getDemandReference( int nIdResourceHistory )
     {
-    	   return _providerDirectoryService.getRecordFieldValue( _npositionDemandReference, getRecord( nIdResourceHistory ).getIdRecord( ), _nIdDirectory )+"-"+getOptionalDemandId( nIdResourceHistory );
+        return _providerDirectoryService.getRecordFieldValue( _npositionDemandReference,
+            getRecord( nIdResourceHistory ).getIdRecord(  ), _nIdDirectory ) + "-" +
+        getOptionalDemandId( nIdResourceHistory );
     }
 
     /* (non-Javadoc)
@@ -618,20 +603,19 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
      */
     @Override
     public String getCustomerId( int nIdResourceHistory )
-    {    	
-         return _providerDirectoryService.getRecordFieldValue( _npositionUserCuid, getRecord( nIdResourceHistory ).getIdRecord( ), _nIdDirectory );
+    {
+        return _providerDirectoryService.getRecordFieldValue( _npositionUserCuid,
+            getRecord( nIdResourceHistory ).getIdRecord(  ), _nIdDirectory );
     }
 
-	/* (non-Javadoc)
-	 * @see fr.paris.lutece.plugins.workflow.modules.notifygru.service.AbstractServiceProvider#getReferenteListEntityProvider()
-	 */
-	@Override
-	public ReferenceList getReferenteListEntityProvider()
-	{		
-		ReferenceList refenreceList = new ReferenceList(  );      
-        List<IEntry> listRecordField = _providerDirectoryService.getListEntriesFreemarker( _nIdDirectory );
-        
+    /* (non-Javadoc)
+     * @see fr.paris.lutece.plugins.workflow.modules.notifygru.service.AbstractServiceProvider#getReferenteListEntityProvider()
+     */
+    @Override
+    public ReferenceList getReferenteListEntityProvider(  )
+    {
         ReferenceList referenceList = new ReferenceList(  );
+        List<IEntry> listRecordField = _providerDirectoryService.getListEntriesFreemarker( _nIdDirectory );
 
         for ( IEntry entry : listRecordField )
         {
@@ -668,7 +652,5 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
         }
 
         return referenceList;
-      
-	}
-
+    }
 }
