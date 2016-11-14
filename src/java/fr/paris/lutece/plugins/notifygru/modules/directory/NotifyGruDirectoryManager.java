@@ -368,9 +368,12 @@ public final class NotifyGruDirectoryManager extends AbstractServiceProvider
             NotifyGruDirectoryManager provider = entrySet.getValue(  );
 
             Directory directory = DirectoryHome.findByPrimaryKey( provider.getIdDirectory(  ), _pluginDirectory );
-
-            refenreceList.addItem( provider.getBeanName(  ),
-                provider.getTitle( Locale.getDefault(  ) ) + " : " + directory.getTitle(  ) );
+            
+            if( directory != null ){
+            	
+	            refenreceList.addItem( provider.getBeanName(  ),
+	                provider.getTitle( Locale.getDefault(  ) ) + " : " + directory.getTitle(  ) );
+            }
         }
 
         return refenreceList;
