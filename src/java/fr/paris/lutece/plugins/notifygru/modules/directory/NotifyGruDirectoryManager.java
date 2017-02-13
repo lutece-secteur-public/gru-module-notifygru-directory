@@ -76,7 +76,7 @@ import javax.inject.Inject;
 public final class NotifyGruDirectoryManager extends AbstractServiceProvider
 {
     /** The _list provider notify gru directory. */
-    private static Map<String, NotifyGruDirectoryManager> _listProviderNotifyGruDirectory;
+    private  Map<String, NotifyGruDirectoryManager> _listProviderNotifyGruDirectory;
 
     /** The _str key. */
     private static String _strKey = "notifygru-directory.ProviderService.@.";

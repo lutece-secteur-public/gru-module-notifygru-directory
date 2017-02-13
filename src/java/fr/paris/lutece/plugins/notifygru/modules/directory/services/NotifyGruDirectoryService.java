@@ -465,7 +465,7 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
         entryFilter.setPosition( nPosition );
         entryFilter.setIdDirectory( nIdDirectory );
 
-        List<IEntry> listEntries = EntryHome.getEntryList( entryFilter, pluginDirectory );
+		List<IEntry> listEntries = EntryHome.getEntryList( entryFilter, pluginDirectory );
 
         if ( ( listEntries != null ) && !listEntries.isEmpty(  ) )
         {
