@@ -41,7 +41,6 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  * The Interface INotifyGruDirectoryService.
  */
@@ -50,7 +49,8 @@ public interface INotifyGruDirectoryService
     /**
      * Checks if is entry type email sms accepted.
      *
-     * @param nIdEntryType the n id entry type
+     * @param nIdEntryType
+     *            the n id entry type
      * @return true, if is entry type email sms accepted
      */
     boolean isEntryTypeEmailSMSAccepted( int nIdEntryType );
@@ -58,7 +58,8 @@ public interface INotifyGruDirectoryService
     /**
      * Checks if is entry type user guid accepted.
      *
-     * @param nIdEntryType the n id entry type
+     * @param nIdEntryType
+     *            the n id entry type
      * @return true, if is entry type user guid accepted
      */
     boolean isEntryTypeUserGuidAccepted( int nIdEntryType );
@@ -66,7 +67,8 @@ public interface INotifyGruDirectoryService
     /**
      * Checks if is entry type file accepted.
      *
-     * @param nIdEntryType the n id entry type
+     * @param nIdEntryType
+     *            the n id entry type
      * @return true, if is entry type file accepted
      */
     boolean isEntryTypeFileAccepted( int nIdEntryType );
@@ -74,7 +76,8 @@ public interface INotifyGruDirectoryService
     /**
      * Checks if is entry type refused.
      *
-     * @param nIdEntryType the n id entry type
+     * @param nIdEntryType
+     *            the n id entry type
      * @return true, if is entry type refused
      */
     boolean isEntryTypeRefused( int nIdEntryType );
@@ -82,7 +85,8 @@ public interface INotifyGruDirectoryService
     /**
      * Gets the list states.
      *
-     * @param nIdAction the n id action
+     * @param nIdAction
+     *            the n id action
      * @return the list states
      */
     ReferenceList getListStates( int nIdAction );
@@ -92,12 +96,13 @@ public interface INotifyGruDirectoryService
      *
      * @return the list directories
      */
-    ReferenceList getListDirectories(  );
+    ReferenceList getListDirectories( );
 
     /**
      * Gets the mailing list.
      *
-     * @param request the request
+     * @param request
+     *            the request
      * @return the mailing list
      */
     ReferenceList getMailingList( HttpServletRequest request );
@@ -105,8 +110,10 @@ public interface INotifyGruDirectoryService
     /**
      * Gets the list entries user guid.
      *
-     * @param nidDirectory the nid directory
-     * @param locale the locale
+     * @param nidDirectory
+     *            the nid directory
+     * @param locale
+     *            the locale
      * @return the list entries user guid
      */
     ReferenceList getListEntriesUserGuid( int nidDirectory, Locale locale );
@@ -114,8 +121,10 @@ public interface INotifyGruDirectoryService
     /**
      * Gets the list entries email sms.
      *
-     * @param nidDirectory the nid directory
-     * @param locale the locale
+     * @param nidDirectory
+     *            the nid directory
+     * @param locale
+     *            the locale
      * @return the list entries email sms
      */
     ReferenceList getListEntriesEmailSMS( int nidDirectory, Locale locale );
@@ -123,7 +132,8 @@ public interface INotifyGruDirectoryService
     /**
      * Gets the list entries freemarker.
      *
-     * @param nidDirectory the nid directory
+     * @param nidDirectory
+     *            the nid directory
      * @return the list entries freemarker
      */
     List<IEntry> getListEntriesFreemarker( int nidDirectory );
@@ -131,8 +141,10 @@ public interface INotifyGruDirectoryService
     /**
      * Gets the list entries file.
      *
-     * @param nidDirectory the nid directory
-     * @param locale the locale
+     * @param nidDirectory
+     *            the nid directory
+     * @param locale
+     *            the locale
      * @return the list entries file
      */
     List<IEntry> getListEntriesFile( int nidDirectory, Locale locale );
@@ -140,7 +152,8 @@ public interface INotifyGruDirectoryService
     /**
      * Gets the list entries.
      *
-     * @param nidDirectory the nid directory
+     * @param nidDirectory
+     *            the nid directory
      * @return the list entries
      */
     List<IEntry> getListEntries( int nidDirectory );
@@ -148,9 +161,12 @@ public interface INotifyGruDirectoryService
     /**
      * Gets the email.
      *
-     * @param nPositionEmail the n position email
-     * @param nIdRecord the n id record
-     * @param nIdDirectory the n id directory
+     * @param nPositionEmail
+     *            the n position email
+     * @param nIdRecord
+     *            the n id record
+     * @param nIdDirectory
+     *            the n id directory
      * @return the email
      */
     String getEmail( int nPositionEmail, int nIdRecord, int nIdDirectory );
@@ -158,9 +174,12 @@ public interface INotifyGruDirectoryService
     /**
      * Gets the id demand.
      *
-     * @param nPositionDemand the n position demand
-     * @param nIdRecord the n id record
-     * @param nIdDirectory the n id directory
+     * @param nPositionDemand
+     *            the n position demand
+     * @param nIdRecord
+     *            the n id record
+     * @param nIdDirectory
+     *            the n id directory
      * @return the id demand
      */
     int getIdDemand( int nPositionDemand, int nIdRecord, int nIdDirectory );
@@ -168,9 +187,12 @@ public interface INotifyGruDirectoryService
     /**
      * Gets the id demand type.
      *
-     * @param nPositionDemandType the n position demand type
-     * @param nIdRecord the n id record
-     * @param nIdDirectory the n id directory
+     * @param nPositionDemandType
+     *            the n position demand type
+     * @param nIdRecord
+     *            the n id record
+     * @param nIdDirectory
+     *            the n id directory
      * @return the id demand type
      */
     int getIdDemandType( int nPositionDemandType, int nIdRecord, int nIdDirectory );
@@ -178,9 +200,12 @@ public interface INotifyGruDirectoryService
     /**
      * Gets the SMS phone number.
      *
-     * @param nPositionPhoneNumber the n position phone number
-     * @param nIdRecord the n id record
-     * @param nIdDirectory the n id directory
+     * @param nPositionPhoneNumber
+     *            the n position phone number
+     * @param nIdRecord
+     *            the n id record
+     * @param nIdDirectory
+     *            the n id directory
      * @return the SMS phone number
      */
     String getSMSPhoneNumber( int nPositionPhoneNumber, int nIdRecord, int nIdDirectory );
@@ -188,9 +213,12 @@ public interface INotifyGruDirectoryService
     /**
      * Gets the user guid.
      *
-     * @param nPositionUserGuid the n position user guid
-     * @param nIdRecord the n id record
-     * @param nIdDirectory the n id directory
+     * @param nPositionUserGuid
+     *            the n position user guid
+     * @param nIdRecord
+     *            the n id record
+     * @param nIdDirectory
+     *            the n id directory
      * @return the user guid
      */
     String getUserGuid( int nPositionUserGuid, int nIdRecord, int nIdDirectory );
@@ -198,9 +226,12 @@ public interface INotifyGruDirectoryService
     /**
      * Gets the record field value.
      *
-     * @param nPosition the n position
-     * @param nIdRecord the n id record
-     * @param nIdDirectory the n id directory
+     * @param nPosition
+     *            the n position
+     * @param nIdRecord
+     *            the n id record
+     * @param nIdDirectory
+     *            the n id directory
      * @return the record field value
      */
     String getRecordFieldValue( int nPosition, int nIdRecord, int nIdDirectory );
@@ -208,7 +239,8 @@ public interface INotifyGruDirectoryService
     /**
      * Gets the locale.
      *
-     * @param request the request
+     * @param request
+     *            the request
      * @return the locale
      */
     Locale getLocale( HttpServletRequest request );

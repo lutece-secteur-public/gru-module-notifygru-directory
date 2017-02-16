@@ -36,7 +36,6 @@ package fr.paris.lutece.plugins.notifygru.modules.directory.services;
 import fr.paris.lutece.plugins.directory.business.Directory;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class DefaultDemandTypeService.
@@ -46,8 +45,12 @@ public class DefaultDemandTypeService implements IDemandTypeService
     /** The params config. */
     public static final String PARAMS_CONFIG = "workflow-directory.demandType.DirectoryType.";
 
-    /* (non-Javadoc)
-     * @see fr.paris.lutece.plugins.notifygru.modules.appointment.services.IDemandTypeService#getDemandType(fr.paris.lutece.plugins.appointment.business.AppointmentForm)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * fr.paris.lutece.plugins.notifygru.modules.appointment.services.IDemandTypeService#getDemandType(fr.paris.lutece.plugins.appointment.business.AppointmentForm
+     * )
      */
     @Override
     public int getDemandType( Directory directory )
@@ -56,7 +59,7 @@ public class DefaultDemandTypeService implements IDemandTypeService
 
         if ( directory != null )
         {
-            int nIdType = directory.getIdDirectory(  );
+            int nIdType = directory.getIdDirectory( );
             nDemandType = AppPropertiesService.getPropertyInt( PARAMS_CONFIG + nIdType, nIdType );
         }
 

@@ -28,7 +28,7 @@ public class DirectoryProvider implements IProvider
     // Beans
     private static final String BEAN_SERVICE_DEMAND_TYPE = "notifygru-directory.DefaultDemandTypeService";
     private static final String BEAN_SERVICE_PROVIDER_DIRECTORY = "notifygru-directory.ProviderDirectoryService";
-    
+
     private String _strCustomerEmail;
 
     private String _strCustomerConnectionId;
@@ -38,42 +38,38 @@ public class DirectoryProvider implements IProvider
     private String _strCustomerPhoneNumber;
 
     private String _strDemandReference;
-    
+
     private String _strDemandTypeId;
 
     private Directory _directory;
-    
+
     private Record _record;
-    
+
     private static INotifyGruDirectoryService _notifyGruDirectoryService = SpringContextService.getBean( BEAN_SERVICE_PROVIDER_DIRECTORY );
-    
-    
+
     public DirectoryProvider( String strProviderManagerId, String strProviderId, ResourceHistory resourceHistory )
-    {        
+    {
         Plugin pluginDirectory = PluginService.getPlugin( DirectoryPlugin.PLUGIN_NAME );
-        
+
         _directory = DirectoryHome.findByPrimaryKey( Integer.parseInt( strProviderId ), pluginDirectory );
         _record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource( ), pluginDirectory );
-        
+
         IDemandTypeService demandTypeService = SpringContextService.getBean( BEAN_SERVICE_DEMAND_TYPE );
 
-        DirectoryMappingManager mapping = 
-            DirectoryMappingManagerHome.findByPrimaryKey( ProviderManagerUtil.buildCompleteProviderId( strProviderManagerId, strProviderId ) );
-        
-        _strCustomerEmail = _notifyGruDirectoryService.getEmail( mapping.getEmail( ),
-                _record.getIdRecord(  ), _directory.getIdDirectory( ) );
-        _strCustomerConnectionId = _notifyGruDirectoryService.getUserGuid( mapping.getGuid( ),
-                _record.getIdRecord(  ), _directory.getIdDirectory( ) );
-        _strCustomerId = _notifyGruDirectoryService.getRecordFieldValue( mapping.getCustomerId( ),
-                _record.getIdRecord(  ), _directory.getIdDirectory( ) );
-        _strCustomerPhoneNumber = _notifyGruDirectoryService.getSMSPhoneNumber( mapping.getMobilePhoneNumber( ),
-                _record.getIdRecord(  ), _directory.getIdDirectory( ) );
-        _strDemandReference = _notifyGruDirectoryService.getRecordFieldValue( mapping.getReferenceDemand( ),
-                _record.getIdRecord(  ), _directory.getIdDirectory( ) ) + "-" +
-                _record.getIdRecord( );
+        DirectoryMappingManager mapping = DirectoryMappingManagerHome.findByPrimaryKey( ProviderManagerUtil.buildCompleteProviderId( strProviderManagerId,
+                strProviderId ) );
+
+        _strCustomerEmail = _notifyGruDirectoryService.getEmail( mapping.getEmail( ), _record.getIdRecord( ), _directory.getIdDirectory( ) );
+        _strCustomerConnectionId = _notifyGruDirectoryService.getUserGuid( mapping.getGuid( ), _record.getIdRecord( ), _directory.getIdDirectory( ) );
+        _strCustomerId = _notifyGruDirectoryService.getRecordFieldValue( mapping.getCustomerId( ), _record.getIdRecord( ), _directory.getIdDirectory( ) );
+        _strCustomerPhoneNumber = _notifyGruDirectoryService.getSMSPhoneNumber( mapping.getMobilePhoneNumber( ), _record.getIdRecord( ),
+                _directory.getIdDirectory( ) );
+        _strDemandReference = _notifyGruDirectoryService.getRecordFieldValue( mapping.getReferenceDemand( ), _record.getIdRecord( ),
+                _directory.getIdDirectory( ) )
+                + "-" + _record.getIdRecord( );
         _strDemandTypeId = String.valueOf( demandTypeService.getDemandType( _directory ) );
     }
-    
+
     @Override
     public String provideDemandId( )
     {
@@ -124,31 +120,31 @@ public class DirectoryProvider implements IProvider
         List<IEntry> listRecordField = _notifyGruDirectoryService.getListEntriesFreemarker( _directory.getIdDirectory( ) );
 
         for ( IEntry recordField : listRecordField )
-        {            
+        {
             NotifyGruMarker notifyGruMarker = new NotifyGruMarker( NotifyGruDirectoryConstants.MARK_POSITION + recordField.getPosition( ) );
-            notifyGruMarker.setValue( _notifyGruDirectoryService.getRecordFieldValue( recordField.getPosition(  ),
-                    _record.getIdRecord( ), _directory.getIdDirectory( ) ) );
-            
+            notifyGruMarker.setValue( _notifyGruDirectoryService.getRecordFieldValue( recordField.getPosition( ), _record.getIdRecord( ),
+                    _directory.getIdDirectory( ) ) );
+
             result.add( notifyGruMarker );
         }
 
         return result;
     }
-    
+
     public static Collection<NotifyGruMarker> getProviderMarkerDescriptions( String strProviderId )
     {
-        Collection<NotifyGruMarker> collectionNotifyGruMarkers =
-                new ArrayList<>( );
-        
+        Collection<NotifyGruMarker> collectionNotifyGruMarkers = new ArrayList<>( );
+
         List<IEntry> listEntries = _notifyGruDirectoryService.getListEntriesFreemarker( Integer.parseInt( strProviderId ) );
 
-        for ( IEntry entry : listEntries ) {
-          NotifyGruMarker notifyGruMarker = new NotifyGruMarker( NotifyGruDirectoryConstants.MARK_POSITION + entry.getPosition( ) );
-          notifyGruMarker.setDescription( entry.getTitle( ) );
-        
-          collectionNotifyGruMarkers.add( notifyGruMarker );
+        for ( IEntry entry : listEntries )
+        {
+            NotifyGruMarker notifyGruMarker = new NotifyGruMarker( NotifyGruDirectoryConstants.MARK_POSITION + entry.getPosition( ) );
+            notifyGruMarker.setDescription( entry.getTitle( ) );
+
+            collectionNotifyGruMarkers.add( notifyGruMarker );
         }
-        
+
         return collectionNotifyGruMarkers;
     }
 

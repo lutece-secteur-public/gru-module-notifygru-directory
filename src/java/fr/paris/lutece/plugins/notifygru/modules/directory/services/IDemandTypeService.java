@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.notifygru.modules.directory.services;
 
 import fr.paris.lutece.plugins.directory.business.Directory;
 
-
 /**
  * The Interface IDemandTypeService.
  */
@@ -44,7 +43,8 @@ public interface IDemandTypeService
     /**
      * Gets the demand type.
      *
-     * @param directory the directory
+     * @param directory
+     *            the directory
      * @return the demand type
      */
     int getDemandType( Directory directory );

@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.notifygru.modules.directory.services;
 
-
 /**
  *
  * NotifyDirectoryConstants
@@ -140,7 +139,7 @@ public final class NotifyGruDirectoryConstants
     /**
      * Private constructor
      */
-    private NotifyGruDirectoryConstants(  )
+    private NotifyGruDirectoryConstants( )
     {
     }
 }
