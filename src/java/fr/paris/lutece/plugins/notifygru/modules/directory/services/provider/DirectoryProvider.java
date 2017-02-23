@@ -27,7 +27,6 @@ public class DirectoryProvider implements IProvider
 {
     // Beans
     private static final String BEAN_SERVICE_DEMAND_TYPE = "notifygru-directory.DefaultDemandTypeService";
-    private static final String BEAN_SERVICE_PROVIDER_DIRECTORY = "notifygru-directory.ProviderDirectoryService";
 
     private String _strCustomerEmail;
 
@@ -45,7 +44,7 @@ public class DirectoryProvider implements IProvider
 
     private Record _record;
 
-    private static INotifyGruDirectoryService _notifyGruDirectoryService = SpringContextService.getBean( BEAN_SERVICE_PROVIDER_DIRECTORY );
+    private static INotifyGruDirectoryService _notifyGruDirectoryService = SpringContextService.getBean( NotifyGruDirectoryConstants.BEAN_SERVICE_PROVIDER_DIRECTORY );
 
     public DirectoryProvider( String strProviderManagerId, String strProviderId, ResourceHistory resourceHistory )
     {
@@ -117,7 +116,7 @@ public class DirectoryProvider implements IProvider
     {
         Collection<NotifyGruMarker> result = new ArrayList<>( );
 
-        List<IEntry> listRecordField = _notifyGruDirectoryService.getListEntriesFreemarker( _directory.getIdDirectory( ) );
+        List<IEntry> listRecordField = _notifyGruDirectoryService.getEntries( _directory.getIdDirectory( ) );
 
         for ( IEntry recordField : listRecordField )
         {
@@ -135,7 +134,7 @@ public class DirectoryProvider implements IProvider
     {
         Collection<NotifyGruMarker> collectionNotifyGruMarkers = new ArrayList<>( );
 
-        List<IEntry> listEntries = _notifyGruDirectoryService.getListEntriesFreemarker( Integer.parseInt( strProviderId ) );
+        List<IEntry> listEntries = _notifyGruDirectoryService.getEntries( Integer.parseInt( strProviderId ) );
 
         for ( IEntry entry : listEntries )
         {

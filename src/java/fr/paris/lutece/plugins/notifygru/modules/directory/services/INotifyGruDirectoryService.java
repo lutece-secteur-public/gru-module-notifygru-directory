@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2015, Mairie de Paris
+ * Copyright (c) 2002-2017, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,45 +34,14 @@
 package fr.paris.lutece.plugins.notifygru.modules.directory.services;
 
 import fr.paris.lutece.plugins.directory.business.IEntry;
-import fr.paris.lutece.util.ReferenceList;
 
 import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * The Interface INotifyGruDirectoryService.
  */
 public interface INotifyGruDirectoryService
 {
-    /**
-     * Checks if is entry type email sms accepted.
-     *
-     * @param nIdEntryType
-     *            the n id entry type
-     * @return true, if is entry type email sms accepted
-     */
-    boolean isEntryTypeEmailSMSAccepted( int nIdEntryType );
-
-    /**
-     * Checks if is entry type user guid accepted.
-     *
-     * @param nIdEntryType
-     *            the n id entry type
-     * @return true, if is entry type user guid accepted
-     */
-    boolean isEntryTypeUserGuidAccepted( int nIdEntryType );
-
-    /**
-     * Checks if is entry type file accepted.
-     *
-     * @param nIdEntryType
-     *            the n id entry type
-     * @return true, if is entry type file accepted
-     */
-    boolean isEntryTypeFileAccepted( int nIdEntryType );
-
     /**
      * Checks if is entry type refused.
      *
@@ -83,80 +52,13 @@ public interface INotifyGruDirectoryService
     boolean isEntryTypeRefused( int nIdEntryType );
 
     /**
-     * Gets the list states.
-     *
-     * @param nIdAction
-     *            the n id action
-     * @return the list states
-     */
-    ReferenceList getListStates( int nIdAction );
-
-    /**
-     * Gets the list directories.
-     *
-     * @return the list directories
-     */
-    ReferenceList getListDirectories( );
-
-    /**
-     * Gets the mailing list.
-     *
-     * @param request
-     *            the request
-     * @return the mailing list
-     */
-    ReferenceList getMailingList( HttpServletRequest request );
-
-    /**
-     * Gets the list entries user guid.
-     *
-     * @param nidDirectory
-     *            the nid directory
-     * @param locale
-     *            the locale
-     * @return the list entries user guid
-     */
-    ReferenceList getListEntriesUserGuid( int nidDirectory, Locale locale );
-
-    /**
-     * Gets the list entries email sms.
-     *
-     * @param nidDirectory
-     *            the nid directory
-     * @param locale
-     *            the locale
-     * @return the list entries email sms
-     */
-    ReferenceList getListEntriesEmailSMS( int nidDirectory, Locale locale );
-
-    /**
-     * Gets the list entries freemarker.
-     *
-     * @param nidDirectory
-     *            the nid directory
-     * @return the list entries freemarker
-     */
-    List<IEntry> getListEntriesFreemarker( int nidDirectory );
-
-    /**
-     * Gets the list entries file.
-     *
-     * @param nidDirectory
-     *            the nid directory
-     * @param locale
-     *            the locale
-     * @return the list entries file
-     */
-    List<IEntry> getListEntriesFile( int nidDirectory, Locale locale );
-
-    /**
      * Gets the list entries.
      *
      * @param nidDirectory
      *            the nid directory
      * @return the list entries
      */
-    List<IEntry> getListEntries( int nidDirectory );
+    List<IEntry> getEntries( int nidDirectory );
 
     /**
      * Gets the email.
@@ -235,13 +137,4 @@ public interface INotifyGruDirectoryService
      * @return the record field value
      */
     String getRecordFieldValue( int nPosition, int nIdRecord, int nIdDirectory );
-
-    /**
-     * Gets the locale.
-     *
-     * @param request
-     *            the request
-     * @return the locale
-     */
-    Locale getLocale( HttpServletRequest request );
 }

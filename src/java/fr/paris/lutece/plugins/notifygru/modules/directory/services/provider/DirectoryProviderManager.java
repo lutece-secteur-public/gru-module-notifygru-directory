@@ -73,5 +73,21 @@ public class DirectoryProviderManager extends AbstractProviderManager
     {
         return new DirectoryProvider( getId( ), strProviderId, resourceHistory );
     }
+    
+    public Collection<ProviderDescription> getAllProviderDescriptions( )
+    {
+        Collection<ProviderDescription> collectionProviderDescriptions = new ArrayList<>( );
+        DirectoryFilter filter = new DirectoryFilter( );
+        List<Directory> listDirectory = DirectoryHome.getDirectoryList( filter, PluginService.getPlugin( DirectoryPlugin.PLUGIN_NAME ) );
+
+        for ( Directory directory : listDirectory )
+        {
+            ProviderDescription providerDescription = new ProviderDescription( String.valueOf( directory.getIdDirectory( ) ),
+                    I18nService.getLocalizedString( NotifyGruDirectoryConstants.TITLE_I18NKEY, I18nService.getDefaultLocale( ) ) + directory.getTitle( ) );
+            collectionProviderDescriptions.add( providerDescription );
+        }
+
+        return collectionProviderDescriptions;
+    }
 
 }
