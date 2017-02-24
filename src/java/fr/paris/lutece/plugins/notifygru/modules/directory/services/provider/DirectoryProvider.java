@@ -22,6 +22,7 @@ import fr.paris.lutece.plugins.workflowcore.business.resource.ResourceHistory;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
+import fr.paris.lutece.portal.service.util.AppException;
 
 public class DirectoryProvider implements IProvider
 {
@@ -57,6 +58,12 @@ public class DirectoryProvider implements IProvider
 
         DirectoryMappingManager mapping = DirectoryMappingManagerHome.findByPrimaryKey( ProviderManagerUtil.buildCompleteProviderId( strProviderManagerId,
                 strProviderId ) );
+
+        if ( mapping == null )
+        {
+            throw new AppException( "No mapping found for the directory " + _directory.getTitle( )
+                    + ". Please check the configuration of the module-directory-mappingmanager." );
+        }
 
         _strCustomerEmail = _notifyGruDirectoryService.getEmail( mapping.getEmail( ), _record.getIdRecord( ), _directory.getIdDirectory( ) );
         _strCustomerConnectionId = _notifyGruDirectoryService.getUserGuid( mapping.getGuid( ), _record.getIdRecord( ), _directory.getIdDirectory( ) );
