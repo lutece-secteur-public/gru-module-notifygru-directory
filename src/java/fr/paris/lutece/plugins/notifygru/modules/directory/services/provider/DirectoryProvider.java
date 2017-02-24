@@ -29,6 +29,9 @@ public class DirectoryProvider implements IProvider
     // Beans
     private static final String BEAN_SERVICE_DEMAND_TYPE = "notifygru-directory.DefaultDemandTypeService";
 
+    private static INotifyGruDirectoryService _notifyGruDirectoryService = SpringContextService
+            .getBean( NotifyGruDirectoryConstants.BEAN_SERVICE_PROVIDER_DIRECTORY );
+
     private String _strCustomerEmail;
 
     private String _strCustomerConnectionId;
@@ -44,8 +47,6 @@ public class DirectoryProvider implements IProvider
     private Directory _directory;
 
     private Record _record;
-
-    private static INotifyGruDirectoryService _notifyGruDirectoryService = SpringContextService.getBean( NotifyGruDirectoryConstants.BEAN_SERVICE_PROVIDER_DIRECTORY );
 
     public DirectoryProvider( String strProviderManagerId, String strProviderId, ResourceHistory resourceHistory )
     {
