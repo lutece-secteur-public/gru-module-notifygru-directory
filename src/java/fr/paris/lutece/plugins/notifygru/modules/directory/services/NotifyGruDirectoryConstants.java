@@ -50,7 +50,7 @@ public final class NotifyGruDirectoryConstants
 
     // MARKS
     public static final String MARK_POSITION = "position_";
-    
+
     // Beans
     public static final String BEAN_SERVICE_PROVIDER_DIRECTORY = "notifygru-directory.ProviderDirectoryService";
 

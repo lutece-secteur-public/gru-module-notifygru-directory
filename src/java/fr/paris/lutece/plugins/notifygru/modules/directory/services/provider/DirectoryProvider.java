@@ -1,3 +1,36 @@
+/*
+ * Copyright (c) 2002-2017, Mairie de Paris
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *  1. Redistributions of source code must retain the above copyright notice
+ *     and the following disclaimer.
+ *
+ *  2. Redistributions in binary form must reproduce the above copyright notice
+ *     and the following disclaimer in the documentation and/or other materials
+ *     provided with the distribution.
+ *
+ *  3. Neither the name of 'Mairie de Paris' nor 'Lutece' nor the names of its
+ *     contributors may be used to endorse or promote products derived from
+ *     this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * License 1.0
+ */
 package fr.paris.lutece.plugins.notifygru.modules.directory.services.provider;
 
 import java.util.ArrayList;
@@ -24,6 +57,10 @@ import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppException;
 
+/**
+ * This class represents a provider for a {@link Directory} object
+ *
+ */
 public class DirectoryProvider implements IProvider
 {
     // Beans
@@ -48,6 +85,16 @@ public class DirectoryProvider implements IProvider
 
     private Record _record;
 
+    /**
+     * Constructor
+     * 
+     * @param strProviderManagerId
+     *            the provider manager id. Used to retrieve the mapping.
+     * @param strProviderId
+     *            the provider id. Corresponds to the {@code Directory} id. Used to retrieve the mapping.
+     * @param resourceHistory
+     *            the resource history. Corresponds to the {@link Record} object containing the data to provide
+     */
     public DirectoryProvider( String strProviderManagerId, String strProviderId, ResourceHistory resourceHistory )
     {
         Plugin pluginDirectory = PluginService.getPlugin( DirectoryPlugin.PLUGIN_NAME );
@@ -77,48 +124,72 @@ public class DirectoryProvider implements IProvider
         _strDemandTypeId = String.valueOf( demandTypeService.getDemandType( _directory ) );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String provideDemandId( )
     {
         return String.valueOf( _record.getIdRecord( ) );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String provideDemandTypeId( )
     {
         return _strDemandTypeId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String provideDemandReference( )
     {
         return _strDemandReference;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String provideCustomerConnectionId( )
     {
         return _strCustomerConnectionId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String provideCustomerId( )
     {
         return _strCustomerId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String provideCustomerEmail( )
     {
         return _strCustomerEmail;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String provideCustomerMobilePhone( )
     {
         return _strCustomerPhoneNumber;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<NotifyGruMarker> provideMarkerValues( )
     {
@@ -138,6 +209,13 @@ public class DirectoryProvider implements IProvider
         return result;
     }
 
+    /**
+     * Gives the marker descriptions of the specified provider
+     * 
+     * @param strProviderId
+     *            the provider id. Corresponds to the {@code Directory} id
+     * @return the marker descriptions
+     */
     public static Collection<NotifyGruMarker> getProviderMarkerDescriptions( String strProviderId )
     {
         Collection<NotifyGruMarker> collectionNotifyGruMarkers = new ArrayList<>( );

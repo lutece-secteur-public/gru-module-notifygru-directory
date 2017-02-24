@@ -133,12 +133,12 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
         List<IEntry> listAllEntries = EntryHome.getEntryList( entryFilter, pluginDirectory );
 
         for ( IEntry entry : listAllEntries )
-        {   
-            if ( entry.getEntryType(  ).getGroup(  ) )
+        {
+            if ( entry.getEntryType( ).getGroup( ) )
             {
-                if ( entry.getChildren(  ) != null )
+                if ( entry.getChildren( ) != null )
                 {
-                    for ( IEntry child : entry.getChildren(  ) )
+                    for ( IEntry child : entry.getChildren( ) )
                     {
                         if ( !isEntryTypeRefused( child.getEntryType( ).getIdType( ) ) )
                         {
