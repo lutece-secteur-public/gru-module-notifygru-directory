@@ -45,7 +45,6 @@ import fr.paris.lutece.plugins.directory.business.RecordHome;
 import fr.paris.lutece.plugins.directory.modules.mappingmanager.business.DirectoryMappingManager;
 import fr.paris.lutece.plugins.directory.modules.mappingmanager.business.DirectoryMappingManagerHome;
 import fr.paris.lutece.plugins.directory.service.DirectoryPlugin;
-import fr.paris.lutece.plugins.notifygru.modules.directory.services.IDemandTypeService;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryConstants;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.IProvider;
@@ -63,8 +62,6 @@ import fr.paris.lutece.portal.service.util.AppException;
  */
 public class DirectoryProvider implements IProvider
 {
-    // Beans
-    private static final String BEAN_SERVICE_DEMAND_TYPE = "notifygru-directory.DefaultDemandTypeService";
 
     private static INotifyGruDirectoryService _notifyGruDirectoryService = SpringContextService
             .getBean( NotifyGruDirectoryConstants.BEAN_SERVICE_PROVIDER_DIRECTORY );
@@ -102,7 +99,6 @@ public class DirectoryProvider implements IProvider
         _directory = DirectoryHome.findByPrimaryKey( Integer.parseInt( strProviderId ), pluginDirectory );
         _record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource( ), pluginDirectory );
 
-        IDemandTypeService demandTypeService = SpringContextService.getBean( BEAN_SERVICE_DEMAND_TYPE );
 
         DirectoryMappingManager mapping = DirectoryMappingManagerHome.findByPrimaryKey( ProviderManagerUtil.buildCompleteProviderId( strProviderManagerId,
                 strProviderId ) );
@@ -121,7 +117,7 @@ public class DirectoryProvider implements IProvider
         _strDemandReference = _notifyGruDirectoryService.getRecordFieldValue( mapping.getReferenceDemand( ), _record.getIdRecord( ),
                 _directory.getIdDirectory( ) )
                 + "-" + _record.getIdRecord( );
-        _strDemandTypeId = String.valueOf( demandTypeService.getDemandType( _directory ) );
+        _strDemandTypeId = String.valueOf( mapping.getDemandTypeId( ) );
     }
 
     /**
