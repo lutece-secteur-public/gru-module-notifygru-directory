@@ -38,6 +38,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import fr.paris.lutece.plugins.directory.business.Directory;
 import fr.paris.lutece.plugins.directory.business.DirectoryFilter;
@@ -129,7 +130,7 @@ public class DirectoryProviderManager extends AbstractProviderManager
      * {@inheritDoc}
      */
     @Override
-    public IProvider createProvider( String strProviderId, ResourceHistory resourceHistory )
+    public IProvider createProvider( String strProviderId, ResourceHistory resourceHistory, HttpServletRequest request )
     {
         return new DirectoryProvider( getId( ), strProviderId, resourceHistory );
     }

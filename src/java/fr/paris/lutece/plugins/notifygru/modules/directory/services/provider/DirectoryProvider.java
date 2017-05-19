@@ -99,7 +99,6 @@ public class DirectoryProvider implements IProvider
         _directory = DirectoryHome.findByPrimaryKey( Integer.parseInt( strProviderId ), pluginDirectory );
         _record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource( ), pluginDirectory );
 
-
         DirectoryMappingManager mapping = DirectoryMappingManagerHome.findByPrimaryKey( ProviderManagerUtil.buildCompleteProviderId( strProviderManagerId,
                 strProviderId ) );
 
