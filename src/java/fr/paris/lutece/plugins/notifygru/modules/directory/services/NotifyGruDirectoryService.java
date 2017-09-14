@@ -47,6 +47,7 @@ import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,12 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
     /** The Constant BEAN_SERVICE. */
     public static final String BEAN_SERVICE = "notifygru-directory.ProviderDirectoryService";
 
+    // PROPERTIES
+    private static final String PROPERTY_REFUSED_DIRECTORY_ENTRY_TYPES = "workflow-notifygrudirectory.refusedDirectoryEntryTypes";
+
+    // Other constants
+    private static final String COMMA = ",";
+
     /** The _list refused entry types. */
     private final List<Integer> _listRefusedEntryTypes;
 
@@ -68,7 +75,7 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
     private NotifyGruDirectoryService( )
     {
         // Init list refused entry types
-        _listRefusedEntryTypes = fillListEntryTypes( NotifyGruDirectoryConstants.PROPERTY_REFUSED_DIRECTORY_ENTRY_TYPES );
+        _listRefusedEntryTypes = fillListEntryTypes( PROPERTY_REFUSED_DIRECTORY_ENTRY_TYPES );
     }
 
     /**
@@ -85,7 +92,7 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
 
         if ( StringUtils.isNotBlank( strEntryTypes ) )
         {
-            String [ ] listAcceptEntryTypesForIdDemand = strEntryTypes.split( NotifyGruDirectoryConstants.COMMA );
+            String [ ] listAcceptEntryTypesForIdDemand = strEntryTypes.split( COMMA );
 
             for ( String strAcceptEntryType : listAcceptEntryTypesForIdDemand )
             {
@@ -187,17 +194,7 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
 
         strIdDemand = getRecordFieldValue( nPositionDemand, nIdRecord, nIdDirectory );
 
-        int nId = -1;
-
-        try
-        {
-            nId = Integer.parseInt( strIdDemand );
-        }
-        catch( NumberFormatException e )
-        {
-        }
-
-        return nId;
+        return NumberUtils.toInt( strIdDemand, -1 );
     }
 
     /*
@@ -212,17 +209,7 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
 
         strIdDemandType = getRecordFieldValue( nPositionDemandType, nIdRecord, nIdDirectory );
 
-        int nId = -1;
-
-        try
-        {
-            nId = Integer.parseInt( strIdDemandType );
-        }
-        catch( NumberFormatException e )
-        {
-        }
-
-        return nId;
+        return NumberUtils.toInt( strIdDemandType, -1 );
     }
 
     /*

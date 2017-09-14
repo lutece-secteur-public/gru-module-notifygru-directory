@@ -44,7 +44,6 @@ import fr.paris.lutece.plugins.directory.business.Directory;
 import fr.paris.lutece.plugins.directory.business.DirectoryFilter;
 import fr.paris.lutece.plugins.directory.business.DirectoryHome;
 import fr.paris.lutece.plugins.directory.service.DirectoryPlugin;
-import fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryConstants;
 import fr.paris.lutece.plugins.modulenotifygrumappingmanager.service.AbstractProviderManagerWithMapping;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.IProvider;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.ProviderDescription;
@@ -68,6 +67,9 @@ import fr.paris.lutece.util.ReferenceList;
  */
 public class DirectoryProviderManager extends AbstractProviderManagerWithMapping
 {
+    // Messages
+    private static final String TITLE_I18NKEY = "module.notifygru.directory.module.providerdirectory";
+
     @Inject
     private ActionService _actionService;
 
@@ -98,12 +100,12 @@ public class DirectoryProviderManager extends AbstractProviderManagerWithMapping
         for ( Directory directory : listDirectory )
         {
             Action action = _actionService.findByPrimaryKey( task.getAction( ).getId( ) );
-            Workflow wf = action.getWorkflow( );
+            Workflow workflow = action.getWorkflow( );
 
-            if ( ( wf.getId( ) == directory.getIdWorkflow( ) ) )
+            if ( ( workflow.getId( ) == directory.getIdWorkflow( ) ) )
             {
                 ProviderDescription providerDescription = new ProviderDescription( String.valueOf( directory.getIdDirectory( ) ),
-                        I18nService.getLocalizedString( NotifyGruDirectoryConstants.TITLE_I18NKEY, I18nService.getDefaultLocale( ) ) + directory.getTitle( ) );
+                        I18nService.getLocalizedString( TITLE_I18NKEY, I18nService.getDefaultLocale( ) ) + directory.getTitle( ) );
                 collectionProviderDescriptions.add( providerDescription );
             }
         }
@@ -120,7 +122,7 @@ public class DirectoryProviderManager extends AbstractProviderManagerWithMapping
         Directory directory = DirectoryHome.findByPrimaryKey( Integer.parseInt( strProviderId ), PluginService.getPlugin( DirectoryPlugin.PLUGIN_NAME ) );
 
         ProviderDescription providerDescription = new ProviderDescription( String.valueOf( directory.getIdDirectory( ) ), I18nService.getLocalizedString(
-                NotifyGruDirectoryConstants.TITLE_I18NKEY, I18nService.getDefaultLocale( ) ) + directory.getTitle( ) );
+                TITLE_I18NKEY, I18nService.getDefaultLocale( ) ) + directory.getTitle( ) );
 
         providerDescription.setMarkerDescriptions( DirectoryProvider.getProviderMarkerDescriptions( strProviderId ) );
 
@@ -137,15 +139,9 @@ public class DirectoryProviderManager extends AbstractProviderManagerWithMapping
     }
 
     /**
-     * <p>
-     * Gives the provider description for all the directories.
-     * </p>
-     * <p>
-     * Differ from {@link #getAllProviderDescriptions(ITask )} : this method returns the provider description for all the directories, not only the ones linked
-     * to the current workflow.
-     * 
-     * @return all the provider descriptions
+     * {@inheritDoc}
      */
+    @Override
     public Collection<ProviderDescription> getAllProviderDescriptions( )
     {
         Collection<ProviderDescription> collectionProviderDescriptions = new ArrayList<>( );
@@ -155,7 +151,7 @@ public class DirectoryProviderManager extends AbstractProviderManagerWithMapping
         for ( Directory directory : listDirectory )
         {
             ProviderDescription providerDescription = new ProviderDescription( String.valueOf( directory.getIdDirectory( ) ), I18nService.getLocalizedString(
-                    NotifyGruDirectoryConstants.TITLE_I18NKEY, I18nService.getDefaultLocale( ) ) + directory.getTitle( ) );
+                    TITLE_I18NKEY, I18nService.getDefaultLocale( ) ) + directory.getTitle( ) );
             collectionProviderDescriptions.add( providerDescription );
         }
 

@@ -47,7 +47,6 @@ import fr.paris.lutece.plugins.modulenotifygrumappingmanager.business.NotifygruM
 import fr.paris.lutece.plugins.modulenotifygrumappingmanager.business.NotifygruMappingManagerHome;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryService;
-import fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryConstants;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.IProvider;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.NotifyGruMarker;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.ProviderManagerUtil;
@@ -65,25 +64,26 @@ import fr.paris.lutece.util.ReferenceList;
  */
 public class DirectoryProvider implements IProvider
 {
+    // MARKS
+    private static final String MARK_POSITION = "position_";
 
-    private static INotifyGruDirectoryService _notifyGruDirectoryService = SpringContextService
-            .getBean( NotifyGruDirectoryConstants.BEAN_SERVICE_PROVIDER_DIRECTORY );
+    private static INotifyGruDirectoryService _notifyGruDirectoryService = SpringContextService.getBean( NotifyGruDirectoryService.BEAN_SERVICE );
 
-    private String _strCustomerEmail;
+    private final String _strCustomerEmail;
 
-    private String _strCustomerConnectionId;
+    private final String _strCustomerConnectionId;
 
-    private String _strCustomerId;
+    private final String _strCustomerId;
 
-    private String _strCustomerPhoneNumber;
+    private final String _strCustomerPhoneNumber;
 
-    private String _strDemandReference;
+    private final String _strDemandReference;
 
-    private String _strDemandTypeId;
+    private final String _strDemandTypeId;
 
-    private Directory _directory;
+    private final Directory _directory;
 
-    private Record _record;
+    private final Record _record;
 
     /**
      * Constructor
@@ -206,7 +206,7 @@ public class DirectoryProvider implements IProvider
 
         for ( IEntry recordField : listRecordField )
         {
-            NotifyGruMarker notifyGruMarker = new NotifyGruMarker( NotifyGruDirectoryConstants.MARK_POSITION + recordField.getPosition( ) );
+            NotifyGruMarker notifyGruMarker = new NotifyGruMarker( MARK_POSITION + recordField.getPosition( ) );
             notifyGruMarker.setValue( _notifyGruDirectoryService.getRecordFieldValue( recordField.getPosition( ), _record.getIdRecord( ),
                     _directory.getIdDirectory( ) ) );
 
@@ -231,7 +231,7 @@ public class DirectoryProvider implements IProvider
 
         for ( IEntry entry : listEntries )
         {
-            NotifyGruMarker notifyGruMarker = new NotifyGruMarker( NotifyGruDirectoryConstants.MARK_POSITION + entry.getPosition( ) );
+            NotifyGruMarker notifyGruMarker = new NotifyGruMarker( MARK_POSITION + entry.getPosition( ) );
             notifyGruMarker.setDescription( entry.getTitle( ) );
 
             collectionNotifyGruMarkers.add( notifyGruMarker );

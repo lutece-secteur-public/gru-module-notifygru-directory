@@ -1,29 +1,25 @@
+![](http://dev.lutece.paris.fr/jenkins/buildStatus/icon?job=gru-module-notifygru-directory-deploy)
+# Module NotifyGru Directory
 
-#Module NotifyGru Directory
+## Introduction
 
-##Introduction
-The resource provider (directory) Directory NotifyGru makes the link between the task and the Directory NotifyGru plugin. Indeed, NotifyGru is designed to operate with any implementation of the abstract class `fr.paris.lutece.plugins.workflow.modules.notifygru.service.AbstractServiceProvider` Itself implements the interface `fr.paris.lutece.plugins.workflow.modules.notifygru.service.IProvider` which defines the basic methods of providers.
-##Implementation
+This module implements the provider mechanism for directories. It enables to provide the directory data into the notifications, *via* the Workflow notification task.
 
-Module Notify Gru Directory Manager is implemented resource providers (directory), that is to say, only one instance of a manager provides for each directory, a provider instance.This has the consequence of having a property value `managerProvider` always `FALSE` to indicate that we have a manager provider instance of this service
+ **Note:** The provider mechanism and the notification task are defined in the module `gru-module-workflow-notifygru` .
 
-In the context file, we like reporting BEAN : `` 
+## Usage
 
-##Configuration
+ **Prerequisite:** The directory is created.
 
+In the notification task (from the `gru-module-workflow-notifygru` ), some information can be configured from the GUI (like the content of the email) and some others cannot (like the connection id of the user).
 
+For the information that cannot be configured in the GUI, this module uses the module `gru-module-notifygru-mapping-manager` to map the entries of the directory with the data to send in the notification. Thus, go to the dedicated `AdminFeature` of the module `gru-module-notifygru-mapping-manager` to configure the mapping for the directory.
 
-##Provider use
-
-When the task is originally created and the selected provider, the instance of the latter gives the information available via bookmarks.. These bookmarks can be used to set messages or objects of different tabs :
-
+Then, add the notification task in the Workflow associated to the directory. Configure the task:
  
-* title field 1 ${position_1}
-* title field 2 ${position_2}
-* .........
-* title field n ${position_n}
+* In the first step of the configuration, choose your directory and save.
+* In the second step of the configuration, you can add the directory entries in the notifications by using the markers. The table in the right side of the page tells you which markers you can use.
 
-When performing the task NotifyGru, the provider instance provides all the necessary information to build the JSON stream.
 
 
 [Maven documentation and reports](http://dev.lutece.paris.fr/plugins/module-notifygru-directory/)

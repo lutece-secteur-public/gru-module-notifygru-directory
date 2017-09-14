@@ -2,64 +2,40 @@
 <document>
     <properties>
         <title>       
-          Module NotifyGru Directory : Provider (module) of NotifyGru module 
-           
+          Module NotifyGru Directory
         </title>
     </properties>
     <body>
         <section name="Module NotifyGru Directory">
-           
-             <subsection name="Introduction">
-            The resource provider (directory) Directory NotifyGru makes the link between the task and the Directory NotifyGru plugin.
-             Indeed, NotifyGru is designed to operate with any implementation of the abstract class
-            <code>fr.paris.lutece.plugins.workflow.modules.notifygru.service.AbstractServiceProvider</code> Itself implements the interface
-             <code>fr.paris.lutece.plugins.workflow.modules.notifygru.service.IProvider</code> which defines the basic methods of providers.
-          </subsection>
-           
-            <subsection name="Implementation">
-                <p>Module Notify Gru Directory Manager is implemented resource providers (directory), 
-                that is to say, only one instance of a manager provides for each directory, a provider instance.
-                     This has the consequence of having a property value <code>managerProvider</code>always<code>FALSE</code>
-                 to indicate that we have a manager provider instance of this service</p>
-             
-              <p>In the context file, we like reporting BEAN :
-           <code>    <bean id="notifygru-directory.ProviderService" class="fr.paris.lutece.plugins.notifygru.modules.directory.NotifyGruDirectoryManager"
- 		p:key="notifygru-directory.ProviderService"
- 		p:titleI18nKey="module.notifygru.directory.module.providerdirectory"
-                p:beanName="notifygru-directory.ProviderService" 
-                p:managerProvider="true" 
-                 />
-    </code>            
-            </p>  
-            
+            <subsection name="Introduction">
+                <p>
+                This module implements the provider mechanism for directories.
+                It enables to provide the directory data into the notifications, <em>via</em> the Workflow notification task.
+                </p>
+                <p>
+                <strong>Note:</strong> The provider mechanism and the notification task are defined in the module <code>gru-module-workflow-notifygru</code>.
+                </p>
             </subsection>
-            
-            
-            
-            <subsection name="Configuration">
-              <p></p>
- 
+            <subsection name="Usage">
+                <p>
+                <strong>Prerequisite:</strong> The directory is created.
+                </p>
+                <p>
+                In the notification task (from the <code>gru-module-workflow-notifygru</code>), some information can be configured from the GUI (like the content of the email) and some others cannot (like the connection id of the user).
+                </p>
+                <p>
+                For the information that cannot be configured in the GUI, this module uses the module <code>gru-module-notifygru-mapping-manager</code> to map the entries of the directory with the data to send in the notification.
+                Thus, go to the dedicated <code>AdminFeature</code> of the module <code>gru-module-notifygru-mapping-manager</code> to configure the mapping for the directory.
+                </p>
+                <p>
+                Then, add the notification task in the Workflow associated to the directory.
+                Configure the task:
+                <ul>
+                    <li>In the first step of the configuration, choose your directory and save.</li>
+                    <li>In the second step of the configuration, you can add the directory entries in the notifications by using the markers. The table in the right side of the page tells you which markers you can use.</li>
+                </ul> 
+                </p>  
             </subsection>
-            
-            <subsection name="Provider use">
-                <p>When the task is originally created and the selected provider, the instance of the latter gives the information available via bookmarks..
-                 These bookmarks can be used to set messages or objects of different tabs :  </p>
-                 
-                    <ul>
-           
-<li>title field 1 	${position_1}</li>
-<li>title field 2 	${position_2}</li>
-<li>.........</li>
-<li>title field  n 	${position_n}</li>
-
-
-
-                </ul>
-                
-                
-                   <p>When performing the task NotifyGru, the provider instance provides all the necessary information to build the JSON stream.</p>
-            </subsection>
-            
         </section>
     </body>
 </document>
