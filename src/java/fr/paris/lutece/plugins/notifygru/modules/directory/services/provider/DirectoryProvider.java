@@ -42,10 +42,11 @@ import fr.paris.lutece.plugins.directory.business.DirectoryHome;
 import fr.paris.lutece.plugins.directory.business.IEntry;
 import fr.paris.lutece.plugins.directory.business.Record;
 import fr.paris.lutece.plugins.directory.business.RecordHome;
-import fr.paris.lutece.plugins.directory.modules.mappingmanager.business.DirectoryMappingManager;
-import fr.paris.lutece.plugins.directory.modules.mappingmanager.business.DirectoryMappingManagerHome;
 import fr.paris.lutece.plugins.directory.service.DirectoryPlugin;
+import fr.paris.lutece.plugins.modulenotifygrumappingmanager.business.NotifygruMappingManager;
+import fr.paris.lutece.plugins.modulenotifygrumappingmanager.business.NotifygruMappingManagerHome;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService;
+import fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryService;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryConstants;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.IProvider;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.NotifyGruMarker;
@@ -55,6 +56,8 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppException;
+import fr.paris.lutece.util.ReferenceItem;
+import fr.paris.lutece.util.ReferenceList;
 
 /**
  * This class represents a provider for a {@link Directory} object
@@ -99,7 +102,7 @@ public class DirectoryProvider implements IProvider
         _directory = DirectoryHome.findByPrimaryKey( Integer.parseInt( strProviderId ), pluginDirectory );
         _record = RecordHome.findByPrimaryKey( resourceHistory.getIdResource( ), pluginDirectory );
 
-        DirectoryMappingManager mapping = DirectoryMappingManagerHome.findByPrimaryKey( ProviderManagerUtil.buildCompleteProviderId( strProviderManagerId,
+        NotifygruMappingManager mapping = NotifygruMappingManagerHome.findByPrimaryKey( ProviderManagerUtil.buildCompleteProviderId( strProviderManagerId,
                 strProviderId ) );
 
         if ( mapping == null )
@@ -109,14 +112,14 @@ public class DirectoryProvider implements IProvider
         }
 
         _strCustomerEmail = _notifyGruDirectoryService.getEmail( mapping.getEmail( ), _record.getIdRecord( ), _directory.getIdDirectory( ) );
-        _strCustomerConnectionId = _notifyGruDirectoryService.getUserGuid( mapping.getGuid( ), _record.getIdRecord( ), _directory.getIdDirectory( ) );
+        _strCustomerConnectionId = _notifyGruDirectoryService.getUserGuid( mapping.getConnectionId( ), _record.getIdRecord( ), _directory.getIdDirectory( ) );
         _strCustomerId = _notifyGruDirectoryService.getRecordFieldValue( mapping.getCustomerId( ), _record.getIdRecord( ), _directory.getIdDirectory( ) );
         _strCustomerPhoneNumber = _notifyGruDirectoryService.getSMSPhoneNumber( mapping.getMobilePhoneNumber( ), _record.getIdRecord( ),
                 _directory.getIdDirectory( ) );
-        _strDemandReference = _notifyGruDirectoryService.getRecordFieldValue( mapping.getReferenceDemand( ), _record.getIdRecord( ),
+        _strDemandReference = _notifyGruDirectoryService.getRecordFieldValue( mapping.getDemandReference( ), _record.getIdRecord( ),
                 _directory.getIdDirectory( ) )
                 + "-" + _record.getIdRecord( );
-        _strDemandTypeId = String.valueOf( mapping.getDemandTypeId( ) );
+        _strDemandTypeId = String.valueOf( mapping.getDemandeTypeId( ) );
     }
 
     /**
@@ -226,6 +229,31 @@ public class DirectoryProvider implements IProvider
         }
 
         return collectionNotifyGruMarkers;
+    }
+
+    /**
+     * Gives a {@code ReferenceList} object containing the list of entries for the specified directory. The code of the {@code ReferenceItem} corresponds to the
+     * position of the entry. The name of the {@code ReferenceItem} corresponds to the title of the entry.
+     * 
+     * @param strProviderId
+     *            the provider id. Corresponds to the {@code Directory} id
+     * @return the entries position
+     */
+    public static ReferenceList getEntryPositions( String strProviderId )
+    {
+        ReferenceList referenceList = new ReferenceList( );
+
+        List<IEntry> listRecordField = _notifyGruDirectoryService.getEntries( Integer.parseInt( strProviderId ) );
+
+        for ( IEntry entry : listRecordField )
+        {
+            ReferenceItem referenceItem = new ReferenceItem( );
+            referenceItem.setCode( String.valueOf( entry.getPosition( ) ) );
+            referenceItem.setName( entry.getTitle( ) );
+            referenceList.add( referenceItem );
+        }
+
+        return referenceList;
     }
 
 }

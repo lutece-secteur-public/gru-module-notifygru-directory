@@ -45,7 +45,7 @@ import fr.paris.lutece.plugins.directory.business.DirectoryFilter;
 import fr.paris.lutece.plugins.directory.business.DirectoryHome;
 import fr.paris.lutece.plugins.directory.service.DirectoryPlugin;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryConstants;
-import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.AbstractProviderManager;
+import fr.paris.lutece.plugins.modulenotifygrumappingmanager.service.AbstractProviderManagerWithMapping;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.IProvider;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.ProviderDescription;
 import fr.paris.lutece.plugins.workflowcore.business.action.Action;
@@ -55,6 +55,7 @@ import fr.paris.lutece.plugins.workflowcore.service.action.ActionService;
 import fr.paris.lutece.plugins.workflowcore.service.task.ITask;
 import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.plugin.PluginService;
+import fr.paris.lutece.util.ReferenceList;
 
 /**
  * <p>
@@ -65,7 +66,7 @@ import fr.paris.lutece.portal.service.plugin.PluginService;
  * </p>
  *
  */
-public class DirectoryProviderManager extends AbstractProviderManager
+public class DirectoryProviderManager extends AbstractProviderManagerWithMapping
 {
     @Inject
     private ActionService _actionService;
@@ -159,6 +160,15 @@ public class DirectoryProviderManager extends AbstractProviderManager
         }
 
         return collectionProviderDescriptions;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ReferenceList getMappingPropertiesForProvider( String strProviderId )
+    {
+        return DirectoryProvider.getEntryPositions( strProviderId );
     }
 
 }

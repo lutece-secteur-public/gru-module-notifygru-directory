@@ -41,6 +41,7 @@ import fr.paris.lutece.plugins.directory.business.RecordFieldFilter;
 import fr.paris.lutece.plugins.directory.business.RecordFieldHome;
 import fr.paris.lutece.plugins.directory.service.DirectoryPlugin;
 import fr.paris.lutece.plugins.directory.utils.DirectoryUtils;
+import fr.paris.lutece.plugins.modulenotifygrumappingmanager.service.NotifygruMappingManagerService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
@@ -235,31 +236,34 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
         String strRecordFieldValue = StringUtils.EMPTY;
         Plugin pluginDirectory = PluginService.getPlugin( DirectoryPlugin.PLUGIN_NAME );
 
-        // RecordField
-        EntryFilter entryFilter = new EntryFilter( );
-        entryFilter.setPosition( nPosition );
-        entryFilter.setIdDirectory( nIdDirectory );
-
-        List<IEntry> listEntries = EntryHome.getEntryList( entryFilter, pluginDirectory );
-
-        if ( ( listEntries != null ) && !listEntries.isEmpty( ) )
+        if ( nPosition != NotifygruMappingManagerService.MAPPING_POSITION_NONE )
         {
-            IEntry entry = listEntries.get( 0 );
-            RecordFieldFilter recordFieldFilterEmail = new RecordFieldFilter( );
-            recordFieldFilterEmail.setIdDirectory( nIdDirectory );
-            recordFieldFilterEmail.setIdEntry( entry.getIdEntry( ) );
-            recordFieldFilterEmail.setIdRecord( nIdRecord );
+            // RecordField
+            EntryFilter entryFilter = new EntryFilter( );
+            entryFilter.setPosition( nPosition );
+            entryFilter.setIdDirectory( nIdDirectory );
 
-            List<RecordField> listRecordFields = RecordFieldHome.getRecordFieldList( recordFieldFilterEmail, pluginDirectory );
+            List<IEntry> listEntries = EntryHome.getEntryList( entryFilter, pluginDirectory );
 
-            if ( ( listRecordFields != null ) && !listRecordFields.isEmpty( ) && ( listRecordFields.get( 0 ) != null ) )
+            if ( ( listEntries != null ) && !listEntries.isEmpty( ) )
             {
-                RecordField recordFieldIdDemand = listRecordFields.get( 0 );
-                strRecordFieldValue = recordFieldIdDemand.getValue( );
+                IEntry entry = listEntries.get( 0 );
+                RecordFieldFilter recordFieldFilterEmail = new RecordFieldFilter( );
+                recordFieldFilterEmail.setIdDirectory( nIdDirectory );
+                recordFieldFilterEmail.setIdEntry( entry.getIdEntry( ) );
+                recordFieldFilterEmail.setIdRecord( nIdRecord );
 
-                if ( recordFieldIdDemand.getField( ) != null )
+                List<RecordField> listRecordFields = RecordFieldHome.getRecordFieldList( recordFieldFilterEmail, pluginDirectory );
+
+                if ( ( listRecordFields != null ) && !listRecordFields.isEmpty( ) && ( listRecordFields.get( 0 ) != null ) )
                 {
-                    strRecordFieldValue = recordFieldIdDemand.getField( ).getTitle( );
+                    RecordField recordFieldIdDemand = listRecordFields.get( 0 );
+                    strRecordFieldValue = recordFieldIdDemand.getValue( );
+
+                    if ( recordFieldIdDemand.getField( ) != null )
+                    {
+                        strRecordFieldValue = recordFieldIdDemand.getField( ).getTitle( );
+                    }
                 }
             }
         }
