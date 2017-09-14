@@ -144,6 +144,15 @@ public class DirectoryProvider implements IProvider
      * {@inheritDoc}
      */
     @Override
+    public String provideDemandSubtypeId( )
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String provideDemandReference( )
     {
         return _strDemandReference;
