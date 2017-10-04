@@ -55,6 +55,7 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppException;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
 
@@ -64,6 +65,9 @@ import fr.paris.lutece.util.ReferenceList;
  */
 public class DirectoryProvider implements IProvider
 {
+	// PROPERTY KEY
+	private static final String PROPERTY_SMS_SENDER_NAME = "workflow-notifygrudirectory.gruprovider.sms.sendername";
+	
     // MARKS
     private static final String MARK_POSITION = "position_";
 
@@ -184,6 +188,15 @@ public class DirectoryProvider implements IProvider
     {
         return _strCustomerEmail;
     }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String provideSmsSender()
+	{
+		return AppPropertiesService.getProperty( PROPERTY_SMS_SENDER_NAME );
+	}
 
     /**
      * {@inheritDoc}
