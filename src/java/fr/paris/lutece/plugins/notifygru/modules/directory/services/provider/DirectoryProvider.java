@@ -36,6 +36,9 @@ package fr.paris.lutece.plugins.notifygru.modules.directory.services.provider;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+
+import org.apache.commons.lang.StringUtils;
 
 import fr.paris.lutece.plugins.directory.business.Directory;
 import fr.paris.lutece.plugins.directory.business.DirectoryHome;
@@ -47,10 +50,17 @@ import fr.paris.lutece.plugins.modulenotifygrumappingmanager.business.NotifygruM
 import fr.paris.lutece.plugins.modulenotifygrumappingmanager.business.NotifygruMappingManagerHome;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryService;
+import fr.paris.lutece.plugins.workflow.modules.comment.business.CommentValue;
+import fr.paris.lutece.plugins.workflow.modules.comment.service.CommentValueService;
+import fr.paris.lutece.plugins.workflow.modules.comment.service.ICommentValueService;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.IProvider;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.NotifyGruMarker;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.ProviderManagerUtil;
 import fr.paris.lutece.plugins.workflowcore.business.resource.ResourceHistory;
+import fr.paris.lutece.plugins.workflowcore.service.task.ITask;
+import fr.paris.lutece.plugins.workflowcore.service.task.ITaskService;
+import fr.paris.lutece.plugins.workflowcore.service.task.TaskService;
+import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
@@ -70,6 +80,10 @@ public class DirectoryProvider implements IProvider
 	
     // MARKS
     private static final String MARK_POSITION = "position_";
+    private static final String MARK_COMMENTS = "comments";
+    
+    // MESSAGE
+    private static final String MESS_DESC_COMMENTS = "module.notifygru.directory.label_desc_comments";
 
     private static INotifyGruDirectoryService _notifyGruDirectoryService = SpringContextService.getBean( NotifyGruDirectoryService.BEAN_SERVICE );
 
@@ -84,6 +98,8 @@ public class DirectoryProvider implements IProvider
     private final String _strDemandReference;
 
     private final String _strDemandTypeId;
+    
+    private String _strAllComments;
 
     private final Directory _directory;
 
@@ -124,6 +140,26 @@ public class DirectoryProvider implements IProvider
                 _directory.getIdDirectory( ) )
                 + "-" + _record.getIdRecord( );
         _strDemandTypeId = String.valueOf( mapping.getDemandeTypeId( ) );
+        
+        // we retrieve all TaskComment of the action for the 'comments'  
+        // Only TaskComment declared BEFORE the TaskNotifyGru are set with value !
+    	ICommentValueService commentService = SpringContextService.getBean( CommentValueService.BEAN_SERVICE );
+    	ITaskService taskService = SpringContextService.getBean( TaskService.BEAN_SERVICE );
+    	_strAllComments = StringUtils.EMPTY;
+    	if( commentService!=null && taskService!=null )
+    	{
+	    	List<ITask> tasks = taskService.getListTaskByIdAction( resourceHistory.getAction( ).getId( ), Locale.getDefault( ) );
+	    	StringBuilder strAllComments = new StringBuilder( );
+	    	for ( ITask iTask : tasks )
+			{
+	        	CommentValue commentValue = commentService.findByPrimaryKey( resourceHistory.getId( ), iTask.getId( ), PluginService.getPlugin( DirectoryPlugin.PLUGIN_NAME ) );
+	        	if( commentValue != null )
+	        	{
+	        		strAllComments.append( commentValue.getValue( ) );
+	        	}
+			}
+	    	_strAllComments = strAllComments.toString( );
+    	}
     }
 
     /**
@@ -225,6 +261,9 @@ public class DirectoryProvider implements IProvider
 
             result.add( notifyGruMarker );
         }
+        NotifyGruMarker notifyGruMarker = new NotifyGruMarker( MARK_COMMENTS );
+        notifyGruMarker.setValue( _strAllComments);
+        result.add( notifyGruMarker );
 
         return result;
     }
@@ -249,6 +288,9 @@ public class DirectoryProvider implements IProvider
 
             collectionNotifyGruMarkers.add( notifyGruMarker );
         }
+        NotifyGruMarker notifyGruMarker = new NotifyGruMarker( MARK_COMMENTS );
+        notifyGruMarker.setDescription( I18nService.getLocalizedString( MESS_DESC_COMMENTS, Locale.getDefault( ) ) );
+        collectionNotifyGruMarkers.add( notifyGruMarker );
 
         return collectionNotifyGruMarkers;
     }
