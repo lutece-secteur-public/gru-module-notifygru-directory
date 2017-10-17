@@ -75,13 +75,13 @@ import fr.paris.lutece.util.ReferenceList;
  */
 public class DirectoryProvider implements IProvider
 {
-	// PROPERTY KEY
-	private static final String PROPERTY_SMS_SENDER_NAME = "workflow-notifygrudirectory.gruprovider.sms.sendername";
-	
+    // PROPERTY KEY
+    private static final String PROPERTY_SMS_SENDER_NAME = "workflow-notifygrudirectory.gruprovider.sms.sendername";
+
     // MARKS
     private static final String MARK_POSITION = "position_";
     private static final String MARK_COMMENTS = "comments";
-    
+
     // MESSAGE
     private static final String MESS_DESC_COMMENTS = "module.notifygru.directory.label_desc_comments";
 
@@ -98,7 +98,7 @@ public class DirectoryProvider implements IProvider
     private final String _strDemandReference;
 
     private final String _strDemandTypeId;
-    
+
     private String _strAllComments;
 
     private final Directory _directory;
@@ -140,26 +140,27 @@ public class DirectoryProvider implements IProvider
                 _directory.getIdDirectory( ) )
                 + "-" + _record.getIdRecord( );
         _strDemandTypeId = String.valueOf( mapping.getDemandeTypeId( ) );
-        
-        // we retrieve all TaskComment of the action for the 'comments'  
+
+        // we retrieve all TaskComment of the action for the 'comments'
         // Only TaskComment declared BEFORE the TaskNotifyGru are set with value !
-    	ICommentValueService commentService = SpringContextService.getBean( CommentValueService.BEAN_SERVICE );
-    	ITaskService taskService = SpringContextService.getBean( TaskService.BEAN_SERVICE );
-    	_strAllComments = StringUtils.EMPTY;
-    	if( commentService!=null && taskService!=null )
-    	{
-	    	List<ITask> tasks = taskService.getListTaskByIdAction( resourceHistory.getAction( ).getId( ), Locale.getDefault( ) );
-	    	StringBuilder strAllComments = new StringBuilder( );
-	    	for ( ITask iTask : tasks )
-			{
-	        	CommentValue commentValue = commentService.findByPrimaryKey( resourceHistory.getId( ), iTask.getId( ), PluginService.getPlugin( DirectoryPlugin.PLUGIN_NAME ) );
-	        	if( commentValue != null )
-	        	{
-	        		strAllComments.append( commentValue.getValue( ) );
-	        	}
-			}
-	    	_strAllComments = strAllComments.toString( );
-    	}
+        ICommentValueService commentService = SpringContextService.getBean( CommentValueService.BEAN_SERVICE );
+        ITaskService taskService = SpringContextService.getBean( TaskService.BEAN_SERVICE );
+        _strAllComments = StringUtils.EMPTY;
+        if ( commentService != null && taskService != null )
+        {
+            List<ITask> tasks = taskService.getListTaskByIdAction( resourceHistory.getAction( ).getId( ), Locale.getDefault( ) );
+            StringBuilder strAllComments = new StringBuilder( );
+            for ( ITask iTask : tasks )
+            {
+                CommentValue commentValue = commentService.findByPrimaryKey( resourceHistory.getId( ), iTask.getId( ),
+                        PluginService.getPlugin( DirectoryPlugin.PLUGIN_NAME ) );
+                if ( commentValue != null )
+                {
+                    strAllComments.append( commentValue.getValue( ) );
+                }
+            }
+            _strAllComments = strAllComments.toString( );
+        }
     }
 
     /**
@@ -225,14 +226,14 @@ public class DirectoryProvider implements IProvider
         return _strCustomerEmail;
     }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String provideSmsSender()
-	{
-		return AppPropertiesService.getProperty( PROPERTY_SMS_SENDER_NAME );
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String provideSmsSender( )
+    {
+        return AppPropertiesService.getProperty( PROPERTY_SMS_SENDER_NAME );
+    }
 
     /**
      * {@inheritDoc}
@@ -262,7 +263,7 @@ public class DirectoryProvider implements IProvider
             result.add( notifyGruMarker );
         }
         NotifyGruMarker notifyGruMarker = new NotifyGruMarker( MARK_COMMENTS );
-        notifyGruMarker.setValue( _strAllComments);
+        notifyGruMarker.setValue( _strAllComments );
         result.add( notifyGruMarker );
 
         return result;
