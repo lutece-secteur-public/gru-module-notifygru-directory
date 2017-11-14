@@ -15,6 +15,6 @@
            <constructor-arg type="java.lang.String" value="notifygru-directory.ProviderService"/>
        </bean>
         
-           <bean id="notifygru-directory.ProviderDirectoryService" class="fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryService" />
+       <bean id="notifygru-directory.ProviderDirectoryService" class="fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryService" />
                
 </beans>
