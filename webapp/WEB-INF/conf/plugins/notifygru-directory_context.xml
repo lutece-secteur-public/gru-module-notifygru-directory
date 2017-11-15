@@ -14,6 +14,8 @@
        <bean id="notifygru-directory.ProviderService" class="fr.paris.lutece.plugins.notifygru.modules.directory.services.provider.DirectoryProviderManager" >
            <constructor-arg type="java.lang.String" value="notifygru-directory.ProviderService"/>
        </bean>
+
+       <bean id="notifygru-directory.editRecordMarkerProvider" class="fr.paris.lutece.plugins.notifygru.modules.directory.services.provider.EditRecordMarkerProvider" />
         
        <bean id="notifygru-directory.ProviderDirectoryService" class="fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryService" />
                
