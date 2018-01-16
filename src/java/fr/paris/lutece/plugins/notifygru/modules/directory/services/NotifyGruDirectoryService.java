@@ -35,6 +35,8 @@ package fr.paris.lutece.plugins.notifygru.modules.directory.services;
 
 import fr.paris.lutece.plugins.directory.business.EntryFilter;
 import fr.paris.lutece.plugins.directory.business.EntryHome;
+import fr.paris.lutece.plugins.directory.business.Field;
+import fr.paris.lutece.plugins.directory.business.FieldHome;
 import fr.paris.lutece.plugins.directory.business.IEntry;
 import fr.paris.lutece.plugins.directory.business.RecordField;
 import fr.paris.lutece.plugins.directory.business.RecordFieldFilter;
@@ -61,6 +63,7 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
     public static final String BEAN_SERVICE = "notifygru-directory.ProviderDirectoryService";
 
     // PROPERTIES
+    private static final String PROPERTY_ENTRY_TYPE_NUMBERING = "directory.entry_type.numbering";
     private static final String PROPERTY_REFUSED_DIRECTORY_ENTRY_TYPES = "workflow-notifygrudirectory.refusedDirectoryEntryTypes";
 
     // Other constants
@@ -246,10 +249,14 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
                 {
                     RecordField recordFieldIdDemand = listRecordFields.get( 0 );
                     strRecordFieldValue = recordFieldIdDemand.getValue( );
-
-                    if ( recordFieldIdDemand.getField( ) != null )
+                    
+                    if ( isDirectoryNumberingType( entry.getEntryType().getIdType() ) && recordFieldIdDemand.getEntry() != null )
                     {
-                        strRecordFieldValue = recordFieldIdDemand.getField( ).getTitle( );
+                       List<Field> listFieldsIdDemand = FieldHome.getFieldListByIdEntry( recordFieldIdDemand.getEntry().getIdEntry(), pluginDirectory );
+                        if ( !listFieldsIdDemand.isEmpty( ) )
+                        {
+                            strRecordFieldValue = listFieldsIdDemand.get( 0 ).getTitle( ) + strRecordFieldValue;
+                        } 
                     }
                 }
             }
@@ -289,5 +296,32 @@ public final class NotifyGruDirectoryService implements INotifyGruDirectoryServi
         }
 
         return strUserGuid;
+    }
+    
+    /**
+     * Check if the given id entry type is an entry type numbering
+     * 
+     * @param nIdEntryType
+     *            the id entry type
+     * @return true if it is an entry type numbering, false otherwise
+     */
+    public static boolean isDirectoryNumberingType( int nIdEntryType )
+    {
+        String strMappingNumberingType = AppPropertiesService.getProperty( PROPERTY_ENTRY_TYPE_NUMBERING );
+
+        if ( strMappingNumberingType != null )
+        {
+            String [ ] tabNumericType = strMappingNumberingType.split( "," );
+
+            for ( String strIdTypeNumeric : tabNumericType )
+            {
+                if ( nIdEntryType == DirectoryUtils.convertStringToInt( strIdTypeNumeric ) )
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
