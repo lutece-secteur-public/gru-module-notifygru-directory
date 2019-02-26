@@ -46,6 +46,8 @@ import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.Notif
 import fr.paris.lutece.plugins.workflowcore.business.resource.ResourceHistory;
 import fr.paris.lutece.plugins.workflowcore.service.task.ITask;
 import fr.paris.lutece.plugins.workflowcore.service.task.ITaskService;
+import net.sf.json.JSONObject;
+import net.sf.json.util.JSONBuilder;
 
 /**
  * This class represents a NotifyGru marker provider for the Edit record task
@@ -58,9 +60,14 @@ public class EditRecordMarkerProvider implements IMarkerProvider
     // Messages
     private static final String MESSAGE_TITLE = "module.notifygru.directory.marker.provider.editrecord.title";
     private static final String MESSAGE_MARKER_URL_DESCRIPTION = "module.notifygru.directory.marker.provider.editrecord.url.description";
+    private static final String MESSAGE_MARKER_MSG_DESCRIPTION = "module.notifygru.directory.marker.provider.editrecord.msg.description";
+    private static final String MESSAGE_MARKER_ENTRIES_DESCRIPTION = "module.notifygru.directory.marker.provider.editrecord.entries.description";
 
     // Markers
     private static final String MARK_EDIT_RECORD_URL = "edit_record_url";
+    private static final String MARK_EDIT_RECORD_MESSAGE = "edit_record_message";
+    private static final String MARK_EDIT_RECORD_ENTRIES = "edit_record_entries";
+    
 
     // Services
     @Inject
@@ -95,9 +102,18 @@ public class EditRecordMarkerProvider implements IMarkerProvider
     {
         List<NotifyGruMarker> listMarkers = new ArrayList<>( );
 
-        NotifyGruMarker notifyGruMarker = new NotifyGruMarker( MARK_EDIT_RECORD_URL );
-        notifyGruMarker.setDescription( MESSAGE_MARKER_URL_DESCRIPTION );
-        listMarkers.add( notifyGruMarker );
+        NotifyGruMarker notifyGruMarkerUrl = new NotifyGruMarker( MARK_EDIT_RECORD_URL );
+        notifyGruMarkerUrl.setDescription( MESSAGE_MARKER_URL_DESCRIPTION );
+        listMarkers.add( notifyGruMarkerUrl );
+
+        NotifyGruMarker notifyGruMarkerMsg = new NotifyGruMarker( MARK_EDIT_RECORD_MESSAGE );
+        notifyGruMarkerMsg.setDescription( MESSAGE_MARKER_MSG_DESCRIPTION );
+        listMarkers.add( notifyGruMarkerMsg );
+
+        NotifyGruMarker notifyGruMarkerEntries = new NotifyGruMarker( MARK_EDIT_RECORD_ENTRIES );
+        notifyGruMarkerEntries.setDescription( MESSAGE_MARKER_ENTRIES_DESCRIPTION );
+        listMarkers.add( notifyGruMarkerEntries );
+
 
         return listMarkers;
     }
@@ -114,9 +130,25 @@ public class EditRecordMarkerProvider implements IMarkerProvider
         {
             if ( taskOther.getTaskType( ).getKey( ).equals( _editRecordTaskInfoProvider.getTaskType( ).getKey( ) ) )
             {
-                NotifyGruMarker notifyGruMarker = new NotifyGruMarker( MARK_EDIT_RECORD_URL );
-                notifyGruMarker.setValue( _editRecordTaskInfoProvider.getTaskResourceInfo( resourceHistory.getId( ), taskOther.getId( ), request ) );
-                listMarkers.add( notifyGruMarker );
+                String strJsonInfos = _editRecordTaskInfoProvider.getTaskResourceInfo( resourceHistory.getId( ), taskOther.getId( ), request ) ;
+
+                JSONObject jsonInfos = JSONObject.fromObject( strJsonInfos );
+                String strUrl = jsonInfos.getString( MARK_EDIT_RECORD_URL );
+                String strMsg = jsonInfos.getString( MARK_EDIT_RECORD_MESSAGE );
+                String strEntries = jsonInfos.getString( MARK_EDIT_RECORD_ENTRIES );
+
+
+                NotifyGruMarker notifyGruMarkerUrl = new NotifyGruMarker( MARK_EDIT_RECORD_URL );
+                notifyGruMarkerUrl.setValue( strUrl );
+                listMarkers.add( notifyGruMarkerUrl );
+
+                NotifyGruMarker notifyGruMarkerMsg = new NotifyGruMarker( MARK_EDIT_RECORD_MESSAGE );
+                notifyGruMarkerMsg.setValue( strMsg );
+                listMarkers.add( notifyGruMarkerMsg );
+
+                NotifyGruMarker notifyGruMarkerEntries = new NotifyGruMarker( MARK_EDIT_RECORD_ENTRIES );
+                notifyGruMarkerEntries.setValue( strEntries );
+                listMarkers.add( notifyGruMarkerEntries );
 
                 break;
             }
