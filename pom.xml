@@ -47,12 +47,7 @@
             <version>[1.0.3-SNAPSHOT,)</version>
             <type>lutece-plugin</type>
         </dependency>
-        <dependency>
-            <groupId>fr.paris.lutece.plugins</groupId>
-            <artifactId>module-workflow-editrecord</artifactId>
-            <version>[1.0.0,)</version>
-            <type>lutece-plugin</type>
-        </dependency>
+
     </dependencies>
    
     <properties>

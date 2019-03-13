@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.IMarkerProvider;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.NotifyGruMarker;
-import fr.paris.lutece.plugins.workflow.service.taskinfo.AbstractTaskInfoProvider;
+import fr.paris.lutece.plugins.workflow.service.taskinfo.ITaskInfoProvider;
 import fr.paris.lutece.plugins.workflowcore.business.resource.ResourceHistory;
 import fr.paris.lutece.plugins.workflowcore.service.task.ITask;
 import fr.paris.lutece.plugins.workflowcore.service.task.ITaskService;
@@ -71,7 +71,7 @@ public class ReplyMarkerProvider implements IMarkerProvider
 
     @Inject
     @Named(value="workflow-reply.replyTaskInfoProvider")
-    private AbstractTaskInfoProvider _replyTaskInfoProvider;
+    private ITaskInfoProvider _replyTaskInfoProvider;
 
     
     /**

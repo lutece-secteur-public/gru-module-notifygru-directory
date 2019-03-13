@@ -40,14 +40,14 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import fr.paris.lutece.plugins.workflow.modules.editrecord.service.taskinfo.EditRecordTaskInfoProvider;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.IMarkerProvider;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.NotifyGruMarker;
+import fr.paris.lutece.plugins.workflow.service.taskinfo.ITaskInfoProvider;
 import fr.paris.lutece.plugins.workflowcore.business.resource.ResourceHistory;
 import fr.paris.lutece.plugins.workflowcore.service.task.ITask;
 import fr.paris.lutece.plugins.workflowcore.service.task.ITaskService;
+import javax.inject.Named;
 import net.sf.json.JSONObject;
-import net.sf.json.util.JSONBuilder;
 
 /**
  * This class represents a NotifyGru marker provider for the Edit record task
@@ -74,7 +74,8 @@ public class EditRecordMarkerProvider implements IMarkerProvider
     private ITaskService _taskService;
 
     @Inject
-    private EditRecordTaskInfoProvider _editRecordTaskInfoProvider;
+    @Named(value="workflow-editrecord.editRecordTaskInfoProvider")
+    private ITaskInfoProvider _editRecordTaskInfoProvider;
 
     /**
      * {@inheritDoc}
