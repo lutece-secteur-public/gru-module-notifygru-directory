@@ -16,9 +16,6 @@
        </bean>
 
        <!-- Marker providers -->
-       <bean id="notifygru-directory.editRecordMarkerProvider" class="fr.paris.lutece.plugins.notifygru.modules.directory.services.provider.EditRecordMarkerProvider" />
-       <bean id="notifygru-directory.replyMarkerProvider"      class="fr.paris.lutece.plugins.notifygru.modules.directory.services.provider.ReplyMarkerProvider" />
-        
        <bean id="notifygru-directory.ProviderDirectoryService" class="fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryService" />
                
 </beans>

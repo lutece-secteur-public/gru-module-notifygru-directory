@@ -47,10 +47,12 @@ import fr.paris.lutece.plugins.modulenotifygrumappingmanager.business.NotifygruM
 import fr.paris.lutece.plugins.modulenotifygrumappingmanager.business.NotifygruMappingManagerHome;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.INotifyGruDirectoryService;
 import fr.paris.lutece.plugins.notifygru.modules.directory.services.NotifyGruDirectoryService;
-import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.IProvider;
 import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.NotifyGruMarker;
-import fr.paris.lutece.plugins.workflow.modules.notifygru.service.provider.ProviderManagerUtil;
+import fr.paris.lutece.plugins.workflow.service.provider.ProviderManagerUtil;
 import fr.paris.lutece.plugins.workflowcore.business.resource.ResourceHistory;
+import fr.paris.lutece.plugins.workflowcore.service.provider.IProvider;
+import fr.paris.lutece.plugins.workflowcore.service.provider.InfoMarker;
+
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
@@ -211,15 +213,15 @@ public class DirectoryProvider implements IProvider
      * {@inheritDoc}
      */
     @Override
-    public Collection<NotifyGruMarker> provideMarkerValues( )
+    public Collection<InfoMarker> provideMarkerValues( )
     {
-        Collection<NotifyGruMarker> result = new ArrayList<>( );
+        Collection<InfoMarker> result = new ArrayList<>( );
 
         List<IEntry> listRecordField = _notifyGruDirectoryService.getEntries( _directory.getIdDirectory( ) );
 
         for ( IEntry recordField : listRecordField )
         {
-            NotifyGruMarker notifyGruMarker = new NotifyGruMarker( MARK_POSITION + recordField.getPosition( ) );
+            InfoMarker notifyGruMarker = new InfoMarker( MARK_POSITION + recordField.getPosition( ) );
             notifyGruMarker.setValue( _notifyGruDirectoryService.getRecordFieldValue( recordField.getPosition( ), _record.getIdRecord( ),
                     _directory.getIdDirectory( ) ) );
 
@@ -236,21 +238,21 @@ public class DirectoryProvider implements IProvider
      *            the provider id. Corresponds to the {@code Directory} id
      * @return the marker descriptions
      */
-    public static Collection<NotifyGruMarker> getProviderMarkerDescriptions( String strProviderId )
+    public static Collection<InfoMarker> getProviderMarkerDescriptions( String strProviderId )
     {
-        Collection<NotifyGruMarker> collectionNotifyGruMarkers = new ArrayList<>( );
+        Collection<InfoMarker> collectionNotifyMarkers = new ArrayList<>( );
 
         List<IEntry> listEntries = _notifyGruDirectoryService.getEntries( Integer.parseInt( strProviderId ) );
 
         for ( IEntry entry : listEntries )
         {
-            NotifyGruMarker notifyGruMarker = new NotifyGruMarker( MARK_POSITION + entry.getPosition( ) );
+            InfoMarker notifyGruMarker = new InfoMarker( MARK_POSITION + entry.getPosition( ) );
             notifyGruMarker.setDescription( entry.getTitle( ) );
 
-            collectionNotifyGruMarkers.add( notifyGruMarker );
+            collectionNotifyMarkers.add( notifyGruMarker );
         }
 
-        return collectionNotifyGruMarkers;
+        return collectionNotifyMarkers;
     }
 
     /**
