@@ -2,7 +2,7 @@
     
      <class>fr.paris.lutece.plugins.notifygru.modules.directory.NotifyGruDirectoryPlugin</class>
     <name>notifygru-directory</name>
-     <version>1.2.2</version>
+     <version>1.2.3-SNAPSHOT</version>
     <documentation/>
     <installation/>
     <changes/>
